@@ -175,11 +175,11 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:6px 0 2px}
   <!-- 5. gün sonu -->
   <div class="screen" id="s-end" hidden>
     <h1 id="endTitle">bugünlük bu kadar.</h1>
-    <div class="sum"><span class="muted">bugün</span><span class="big" id="endSum"></span><span class="muted" id="endAgree"></span><span class="muted" id="endCap" hidden></span></div>
+    <div class="sum"><span class="muted">bugün</span><span class="big" id="endSum"></span><span class="muted" id="endAgree"></span><span class="muted" id="endJury" hidden></span><span class="muted" id="endCap" hidden></span></div>
     <div class="sum" id="weekBox" hidden><span class="muted">bu hafta</span><span class="big" id="weekSum"></span><span class="muted" id="weekAgree"></span></div>
     <p class="muted" id="endNext"></p>
     <div class="dots" id="endDots"></div>
-    <div class="cta"><button class="btn" id="toJury">yargı dağıt</button><p class="note" id="juryHint">üç kişi bahanesini yazdı. haklı mı haksız mı, sen söyle.</p><p class="note" id="juryDoneNote" hidden>yargı dağıtıldı. yeni savunmalar yarın 09:00. mahalle uyumaz, ara verir.</p></div>
+    <div class="cta"><button class="btn" id="toJury">yargı dağıt</button><p class="note" id="juryHint">üç kişi bahanesini yazdı. haklı mı haksız mı, sen söyle.</p><p class="note" id="juryDoneNote" hidden>yargı dağıtıldı. yeni savunmalar yarın 09:00. mahalle uyumaz, ara verir.<br>rozetler ve unvan ben'de.</p></div>
   </div>
 
   <!-- 6. yargı -->
@@ -200,7 +200,7 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:6px 0 2px}
       <div class="tiles"><div class="tile"><div class="n" id="jHit"></div><div class="l">mahalleyle uyum</div></div><div class="tile"><div class="n">3</div><div class="l">savunma</div></div><div class="tile"><div class="n" id="jChar"></div><div class="l">elinin ayarı</div></div></div>
       <div class="sum" id="jOwn" hidden><span class="muted">senin bahanen</span><p id="jOwnText"></p></div>
       <p class="note">oranlar temsili; gerçek oylar gerçek oy sistemiyle gelir. sabır bir erdemdir, bizde yoktur.</p>
-      <div class="cta"><button class="btn o" id="jBack">bugüne dön</button></div>
+      <div class="cta"><button class="btn" id="jBack">günün hesabı</button></div>
     </div>
   </div>
 
@@ -596,6 +596,7 @@ function showEnd(){
   const nw=istNow(), t=new Date(nw); t.setHours(9,0,0,0); if(t<=nw) t.setDate(t.getDate()+1); const m=Math.max(1,Math.round((t-nw)/60000));
   $("endNext").textContent= (curIdx()+1<DAYS.length) ? `yarın 09:00'da 3 yeni durum (${Math.floor(m/60)} sa ${m%60} dk). biçim değişir, yargı değişmez.` : "pilot içerikleri bitti. gerisini yazıyoruz, sen de bir şey yazma.";
   const jd=L.jury&&L.jury.done; $("toJury").hidden=!!jd; $("juryHint").hidden=!!jd; $("juryDoneNote").hidden=!jd;
+  if(jd){ const hit=L.jury.votes.filter(v=>{ const j=JURY[v.i]; return v.yes ? j.yes>=50 : j.yes<50; }).length; $("endJury").textContent=`yargı: mahalleyle ${hit}/3 aynı · elinin ayarı: ${juryChar()}.`; $("endJury").hidden=false; } else $("endJury").hidden=true;
   show("s-end");
 }
 $("toJury").addEventListener("click",showJury);
