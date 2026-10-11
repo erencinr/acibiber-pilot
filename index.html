@@ -462,7 +462,7 @@ const ROZET=[
 
 // ---------- durum ----------
 const $=id=>document.getElementById(id);
-const KEY="acibiber-v6"; const VER=4;
+const KEY="acibiber-v7"; const VER=4;
 function istNow(){ try{ return new Date(new Date().toLocaleString("en-US",{timeZone:"Europe/Istanbul"})); }catch(e){ return new Date(); } }
 function dayKey(off){ const d=istNow(); d.setHours(d.getHours()-9); d.setDate(d.getDate()+(off||0)); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
 let S={v:VER,karma:50,firstDay:dayKey(0),log:{},badges:[],streak:0,lastDay:null,jyes:0,jn:0};
