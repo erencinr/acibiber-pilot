@@ -70,6 +70,8 @@ p{margin:0}
 .why{font-size:13px;color:var(--muted);font-weight:600}
 .yest{background:var(--soft);border-radius:10px;padding:8px 12px;font-size:13px;font-weight:700;color:var(--muted)}
 .yest b{color:var(--fg)}
+.def{background:#F3E6DC}
+.def .row{font-style:italic}
 .newb{background:var(--accent-soft);border:1px solid var(--accent);border-radius:10px;padding:8px 12px;font-size:13px;font-weight:700}
 
 .sum{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px}
@@ -133,7 +135,7 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:6px 0 2px}
   <div class="screen" id="s-start" hidden>
     <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;text-align:center">
       <h1>herkes 50'den başlar.</h1>
-      <p class="muted">günde üç durum. sen seçersin, mahalle yargılar. kaçış yok, alışacaksın.</p>
+      <p class="muted">günde üç durum. sen seçersin, mahalle yargılar. akşam da sen mahalleyi yargılarsın. kaçış yok, alışacaksın.</p>
     </div>
     <div class="cta"><button class="btn" id="startBtn">gir bakalım</button></div>
   </div>
@@ -162,10 +164,10 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:6px 0 2px}
   </div>
 
   <!-- 4. bahane -->
-  <div class="screen" id="s-def" hidden>
-    <h1>bir de seni dinleyelim.</h1>
+  <div class="screen def" id="s-def" hidden>
+    <div class="react" style="background:var(--accent-soft);border-color:var(--accent)"><svg class="face" viewBox="0 0 100 100" id="dFace"></svg><div><h2>yakalandın. bahanen ne?</h2><p>kötü bir şey seçtin; mahalle bunu yargılayacak. kendini savun, hazırdan seç.</p></div></div>
     <div class="pick" id="dPick"></div>
-    <p class="tag">bahanen · birini seç, uydurma, hazır var</p>
+    <p class="tag">bahanen · birini seç, uydurma</p>
     <div class="rows" id="dRows"></div>
     <p class="note" style="text-align:left">birine bas, devam eder. bahanen anonim gider; nick gizli, suç belli.</p>
   </div>
@@ -177,7 +179,7 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:6px 0 2px}
     <div class="sum" id="weekBox" hidden><span class="muted">bu hafta</span><span class="big" id="weekSum"></span><span class="muted" id="weekAgree"></span></div>
     <p class="muted" id="endNext"></p>
     <div class="dots" id="endDots"></div>
-    <div class="cta"><button class="btn" id="toJury">yargı dağıt</button><p class="note" id="juryDoneNote" hidden>yargı dağıtıldı. yeni savunmalar yarın 09:00. mahalle uyumaz, ara verir.</p></div>
+    <div class="cta"><button class="btn" id="toJury">yargı dağıt</button><p class="note" id="juryHint">üç kişi bahanesini yazdı. haklı mı haksız mı, sen söyle.</p><p class="note" id="juryDoneNote" hidden>yargı dağıtıldı. yeni savunmalar yarın 09:00. mahalle uyumaz, ara verir.</p></div>
   </div>
 
   <!-- 6. yargı -->
@@ -573,10 +575,11 @@ function answer(i,scaleVal){
 }
 $("rGo").addEventListener("click",()=>{ const L=dayLog(); if(pending&&pending.bad&&!L.def&&pending.c.b){ renderDef(); return; } qi++; next(); });
 function renderDef(){
-  const c=pending.c; $("dPick").innerHTML=`senin seçimin: <b>${c.f==="olcek"?"ölçekte "+c.o[pending.opt].t:c.o[pending.opt].t}</b>`;
+  const c=pending.c; $("dPick").innerHTML=`suç: <b>${c.f==="olcek"?"ölçekte "+c.o[pending.opt].t:c.o[pending.opt].t}</b>`;
+  $("dFace").innerHTML=$("face").innerHTML;
   const rows=$("dRows"); rows.innerHTML="";
   let dl=false;
-  c.b.forEach((b,i)=>{ const btn=document.createElement("button"); btn.className="row"; btn.textContent=b.t; btn.addEventListener("click",()=>{ if(dl) return; dl=true; const L=dayLog(); L.def={id:pending.id,b:i}; save(); setTimeout(()=>{ qi++; next(); },200); }); rows.appendChild(btn); });
+  c.b.forEach((b,i)=>{ const btn=document.createElement("button"); btn.className="row"; btn.textContent="“"+b.t+"”"; btn.addEventListener("click",()=>{ if(dl) return; dl=true; const L=dayLog(); L.def={id:pending.id,b:i}; save(); setTimeout(()=>{ qi++; next(); },200); }); rows.appendChild(btn); });
   show("s-def");
 }
 $("share").addEventListener("click",()=>{ $("shareNote").hidden=false; $("share").hidden=true; });
@@ -592,7 +595,7 @@ function showEnd(){
   else { $("weekBox").hidden=true; $("endTitle").textContent="bugünlük bu kadar."; }
   const nw=istNow(), t=new Date(nw); t.setHours(9,0,0,0); if(t<=nw) t.setDate(t.getDate()+1); const m=Math.max(1,Math.round((t-nw)/60000));
   $("endNext").textContent= (curIdx()+1<DAYS.length) ? `yarın 09:00'da 3 yeni durum (${Math.floor(m/60)} sa ${m%60} dk). biçim değişir, yargı değişmez.` : "pilot içerikleri bitti. gerisini yazıyoruz, sen de bir şey yazma.";
-  const jd=L.jury&&L.jury.done; $("toJury").hidden=!!jd; $("juryDoneNote").hidden=!jd;
+  const jd=L.jury&&L.jury.done; $("toJury").hidden=!!jd; $("juryHint").hidden=!!jd; $("juryDoneNote").hidden=!jd;
   show("s-end");
 }
 $("toJury").addEventListener("click",showJury);
