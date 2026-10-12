@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>acı biber v2</title>
+<title>acı biber · araf mahallesi</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap">
 <style>
-/* v2.4: tek döngü + bahane + yargı + ben. yazım tarzı TARZ.md: her şey küçük harf, ikinci tekil, laf sokar, kişiye değil davranışa. */
+/* v3 prototip: PRD akışı (URUN-v2.md). vukuat → kıvırma (zorunlu 160) → 21:00 mahalle kahvesi → gece yarısı hesaplaşması. yazım: TARZ.md */
 :root{
   --bg:#F7F1E6; --card:#FBF7F0; --line:#E3D8C6; --line2:#D3C6B0;
   --fg:#1F1B16; --muted:#6F655B; --soft:#F1E8D9;
@@ -32,6 +32,8 @@ body{margin:0;background:#E9E2D6;color:var(--fg);font-family:var(--font);font-si
 .badge::after{content:"";position:absolute;left:50%;bottom:-5px;transform:translateX(-50%);border:5px solid transparent;border-top-color:#fff;border-bottom:0}
 .zl{display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--muted);font-weight:700}
 .zl b{color:var(--fg)}
+.mevki{margin-top:6px;font-size:12px;font-weight:700;color:var(--muted);text-align:center}
+.mevki b{color:var(--fg)}
 
 .screen{flex:1;overflow:auto;padding:16px 18px 24px;display:flex;flex-direction:column;gap:12px;min-height:0}
 h1{font-size:21px;font-weight:800;line-height:1.25;margin:0;letter-spacing:-.3px;text-wrap:balance}
@@ -39,11 +41,11 @@ h2{font-size:16px;font-weight:800;margin:0}
 p{margin:0}
 .muted{color:var(--muted);font-size:14px}
 .tag{font-size:12px;color:var(--muted);font-weight:700}
-.rows{display:flex;flex-direction:column;gap:8px}
-.row{all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card);border:1.5px solid var(--line2);border-radius:12px;padding:13px 14px;cursor:pointer;font-size:15px;font-weight:600;line-height:1.3;width:100%}
-.row::after{content:"›";font-size:22px;flex:none;color:var(--muted)}
-.row:hover{border-color:var(--fg)}
-.row:focus{outline:none}.row:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+.two{display:flex;flex-direction:column;gap:8px}
+.two .big{all:unset;box-sizing:border-box;display:block;width:100%;text-align:center;background:var(--card);border:1.5px solid var(--line2);border-radius:14px;padding:18px 14px;font-size:17px;font-weight:700;line-height:1.3;cursor:pointer}
+.two .big:hover{border-color:var(--fg)}
+.two .big:focus{outline:none}.two .big:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+.two .yada{text-align:center;font-size:12px;color:var(--muted);font-weight:800;letter-spacing:.5px}
 .btn{all:unset;box-sizing:border-box;display:flex;justify-content:center;align-items:center;width:100%;background:var(--accent);color:#fff;font-weight:700;font-size:18px;border-radius:10px;padding:14px;cursor:pointer;text-align:center}
 .btn.o{background:var(--card);color:var(--fg);border:1.5px solid var(--line2)}
 .btn:focus{outline:none}.btn:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
@@ -55,32 +57,43 @@ p{margin:0}
 .link:focus-visible{outline:2px solid var(--fg)}
 .pick{background:var(--soft);border-radius:10px;padding:8px 12px;font-size:13px;color:var(--muted);font-weight:600}
 .pick b{color:var(--fg)}
-.ill{width:100%;border-radius:12px;display:block;border:1px solid var(--line)}
+
+.photo{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.photo img{width:100%;display:block}
+.hot{all:unset;position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
+.hot i{width:30px;height:30px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px rgba(0,0,0,.35);background:rgba(255,255,255,.15)}
+.hot span{background:rgba(31,27,22,.78);color:#fff;font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.hot.sel i{background:var(--accent);border-color:#fff}
+.hot.sel span{background:var(--accent)}
+.hot:focus-visible i{outline:3px solid #fff}
 
 .react{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;gap:12px;align-items:flex-start}
 .face{width:44px;height:44px;flex:none}
 .react h2{margin:0 0 6px;font-size:20px;font-weight:800;line-height:1.2;letter-spacing:-.3px}
 .react p{font-size:16px;font-weight:600;line-height:1.4}
-.react p i{font-style:normal;color:var(--muted)}
 .mah{font-size:14px;color:var(--muted);font-weight:700}
 .mah small{font-weight:600;opacity:.8}
 .delta{display:flex;align-items:baseline;gap:8px;font-weight:800;font-size:20px;font-variant-numeric:tabular-nums}
 .delta .d{font-size:16px}
 .delta .d.p{color:var(--plus)}.delta .d.m{color:var(--minus)}
-.why{font-size:13px;color:var(--muted);font-weight:600}
+.newb{background:var(--accent-soft);border:1px solid var(--accent);border-radius:10px;padding:8px 12px;font-size:13px;font-weight:700}
 .yest{background:var(--soft);border-radius:10px;padding:8px 12px;font-size:13px;font-weight:700;color:var(--muted)}
 .yest b{color:var(--fg)}
-.def{background:#F3E6DC}
-.def .row{font-style:italic}
-.newb{background:var(--accent-soft);border:1px solid var(--accent);border-radius:10px;padding:8px 12px;font-size:13px;font-weight:700}
 
+/* kıvırma */
+.def{background:#F3E6DC}
+textarea{width:100%;min-height:96px;border:1.5px solid var(--line2);border-radius:12px;padding:12px;font:inherit;font-size:16px;font-weight:600;background:var(--card);color:var(--fg);resize:none}
+textarea:focus{outline:3px solid var(--fg);outline-offset:2px}
+.cnt{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:700}
+.help{font-size:11px;color:var(--muted);line-height:1.4}
+
+/* gün sonu, kahve, hesaplaşma, ben */
 .sum{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px}
 .sum .big{font-size:28px;font-weight:800;font-variant-numeric:tabular-nums}
-.dots{display:flex;gap:6px;justify-content:center}
-.dots i{width:8px;height:8px;border-radius:50%;background:var(--line2)}
-.dots i.on{background:var(--fg)}
+.sum .row{display:flex;justify-content:space-between;gap:10px;font-size:14px;border-top:1px solid var(--line);padding-top:6px}
+.sum .row b{font-variant-numeric:tabular-nums;white-space:nowrap}
 .jcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px}
-.jcard .who{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.2px}
+.jcard .who{font-size:12px;color:var(--muted);font-weight:700}
 .jcard .say{font-size:19px;font-weight:800;line-height:1.3;letter-spacing:-.2px}
 .jcard .rev{font-size:14px;color:var(--muted);font-weight:700;border-top:1px solid var(--line);padding-top:8px}
 .jcard .rev b{color:var(--fg)}
@@ -93,24 +106,6 @@ p{margin:0}
 .cards div.on{background:var(--accent-soft);border-color:var(--accent)}
 .cards div.off{color:var(--line2);justify-content:center;align-items:center;font-size:20px}
 
-/* biçimler: foto, ölçek, ikili */
-.photo{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
-.photo img{width:100%;display:block}
-.hot{all:unset;position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
-.hot i{width:30px;height:30px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px rgba(0,0,0,.35);background:rgba(255,255,255,.15)}
-.hot span{background:rgba(31,27,22,.78);color:#fff;font-size:12px;font-weight:700;padding:3px 8px;border-radius:999px;white-space:nowrap}
-.hot.sel i{background:var(--accent);border-color:#fff}
-.hot.sel span{background:var(--accent)}
-.hot:focus-visible i{outline:3px solid #fff}
-input[type=range]{width:100%;accent-color:var(--accent);margin:6px 0 2px}
-.slnum{font-size:48px;font-weight:800;text-align:center;line-height:1;font-variant-numeric:tabular-nums}
-.slends{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:700}
-.two{display:flex;flex-direction:column;gap:8px}
-.two .big{all:unset;box-sizing:border-box;display:block;width:100%;text-align:center;background:var(--card);border:1.5px solid var(--line2);border-radius:14px;padding:18px 14px;font-size:17px;font-weight:700;line-height:1.3;cursor:pointer}
-.two .big:hover{border-color:var(--fg)}
-.two .big:focus{outline:none}.two .big:focus-visible{outline:3px solid var(--fg);outline-offset:2px}
-.two .yada{text-align:center;font-size:12px;color:var(--muted);font-weight:800;letter-spacing:.5px}
-
 .tabs{flex:none;display:flex;border-top:1px solid var(--line);background:var(--bg)}
 .tab{all:unset;flex:1;text-align:center;padding:12px 0 16px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer}
 .tab.on{color:var(--fg)}
@@ -119,8 +114,9 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:6px 0 2px}
 .panel{position:absolute;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);padding:14px 18px 24px;display:flex;flex-direction:column;gap:10px;z-index:9;box-shadow:0 -10px 40px rgba(0,0,0,.15)}
 .panel .r{display:flex;gap:6px;flex-wrap:wrap}
 .chip{all:unset;background:var(--card);border:1.5px solid var(--line2);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;cursor:pointer}
+.chip.on{border-color:var(--accent);background:var(--accent-soft)}
 [hidden]{display:none!important}
-@media (max-height:720px){ h1{font-size:19px} .row{padding:10px 12px;font-size:14px} .screen{gap:10px} .zbar{margin-top:20px} }
+@media (max-height:720px){ h1{font-size:19px} .screen{gap:10px} .zbar{margin-top:20px} .two .big{padding:14px 12px;font-size:16px} }
 </style>
 </head>
 <body>
@@ -129,21 +125,22 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:6px 0 2px}
     <div class="brand"><span>acı biber</span><small id="dayLbl"></small></div>
     <div class="zbar"><i class="z1" id="z1"></i><i class="z2 on" id="z2"></i><i class="z3" id="z3"></i><div class="badge" id="badge">50</div></div>
     <div class="zl"><b>cehennem</b><span>araf</span><b>cennet</b></div>
+    <div class="mevki" id="mevki"></div>
   </div>
 
-  <!-- 1. ilk açılış -->
+  <!-- 1. açılış -->
   <div class="screen" id="s-start" hidden>
     <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:14px;text-align:center">
-      <h1>herkes 50'den başlar.</h1>
-      <p class="muted">günde üç durum. sen seçersin, mahalle yargılar. akşam da sen mahalleyi yargılarsın. kaçış yok, alışacaksın.</p>
+      <h1>araf mahallesi'ne hoş geldin.</h1>
+      <p class="muted">ne cennet'e aldılar ne cehennem'e. herkes 50'den başlar. günde üç vukuat, her birinde kıvırırsın; akşam mahalle kahvesi toplanır, gece yarısı hesap kesilir.</p>
     </div>
     <div class="cta"><button class="btn" id="startBtn">gir bakalım</button></div>
   </div>
 
-  <!-- 2. durum -->
+  <!-- 2. vukuat -->
   <div class="screen" id="s-q" hidden>
     <div class="yest" id="yest" hidden></div>
-    <div style="display:flex;justify-content:space-between;align-items:center"><span class="tag" id="qIdx"></span><span class="tag">birine bas, düşünme. ne yapacağın belli.</span></div>
+    <div style="display:flex;justify-content:space-between;align-items:center"><span class="tag" id="qIdx"></span><span class="tag">ikisi de kötü. birine bas, uzatma.</span></div>
     <p id="qText" style="font-size:17px;font-weight:600;line-height:1.4"></p>
     <h1 id="qKind"></h1>
     <div id="qBody"></div>
@@ -155,66 +152,73 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:6px 0 2px}
     <div class="pick" id="rPick"></div>
     <div class="react"><svg class="face" viewBox="0 0 100 100" id="face"></svg><div><h2 id="rTitle"></h2><p id="rText"></p></div></div>
     <p class="mah" id="rMah"></p>
-    <div class="delta"><span id="rFrom"></span><span>→</span><span id="rTo"></span><span class="d" id="rD"></span></div>
-    <p class="why" id="rWhy" hidden></p>
+    <div class="delta"><span id="rFrom"></span><span>→</span><span id="rTo"></span><span class="d m" id="rD"></span></div>
     <div class="newb" id="rBadge" hidden></div>
-    <div style="display:flex;justify-content:flex-end"><button class="link" id="share">dosta düşmana göster</button></div>
-    <p class="note" id="shareNote" hidden>paylaşım henüz yok. yapılacaklar listesinde, listenin de dibinde.</p>
-    <div class="cta"><button class="btn" id="rGo">geç</button></div>
+    <div class="cta"><button class="btn" id="rGo">şimdi kıvır</button></div>
   </div>
 
-  <!-- 4. bahane -->
+  <!-- 4. kıvırma (zorunlu, 160) -->
   <div class="screen def" id="s-def" hidden>
-    <div class="react" style="background:var(--accent-soft);border-color:var(--accent)"><svg class="face" viewBox="0 0 100 100" id="dFace"></svg><div><h2>yakalandın. bahanen ne?</h2><p>kötü bir şey seçtin; mahalle bunu yargılayacak. kendini savun, hazırdan seç.</p></div></div>
+    <div class="react" style="background:var(--accent-soft);border-color:var(--accent)"><svg class="face" viewBox="0 0 100 100" id="dFace"></svg><div><h2>yakalandın. şimdi kıvır bakalım.</h2><p>bahanen anonim olarak mahalle kahvesine gider. iyi kıvırırsan cezan geri gelir, hatta artıya geçersin. linç yersen üstüne 5 daha.</p></div></div>
     <div class="pick" id="dPick"></div>
-    <p class="tag">bahanen · birini seç, uydurma</p>
-    <div class="rows" id="dRows"></div>
-    <p class="note" style="text-align:left">birine bas, devam eder. bahanen anonim gider; nick gizli, suç belli.</p>
+    <textarea id="dText" maxlength="160" placeholder="yakalandın. şimdi kıvır bakalım (160 karakter)"></textarea>
+    <div class="cnt"><span>isim, telefon, adres yazma; mahalle okur.</span><span id="dCnt">0 / 160</span></div>
+    <p class="help">zor bir gün mü? 112 · alo 183. burası şaka yeri, orası değil.</p>
+    <div class="cta"><button class="btn" id="dGo" disabled>bahaneyi mahalleye ver</button></div>
   </div>
 
   <!-- 5. gün sonu -->
   <div class="screen" id="s-end" hidden>
-    <h1 id="endTitle">bugünlük bu kadar.</h1>
-    <div class="sum"><span class="muted">bugün</span><span class="big" id="endSum"></span><span class="muted" id="endAgree"></span><span class="muted" id="endJury" hidden></span><span class="muted" id="endCap" hidden></span></div>
-    <div class="sum" id="weekBox" hidden><span class="muted">bu hafta</span><span class="big" id="weekSum"></span><span class="muted" id="weekAgree"></span></div>
+    <h1 id="endTitle">bugünün vukuatı bitti.</h1>
+    <div class="sum"><span class="muted">bugün</span><span class="big" id="endSum"></span><span class="muted" id="endLine"></span><div id="endExcuses"></div></div>
     <p class="muted" id="endNext"></p>
-    <div class="dots" id="endDots"></div>
-    <div class="cta"><button class="btn" id="toJury">yargı dağıt</button><p class="note" id="juryHint">üç kişi bahanesini yazdı. haklı mı haksız mı, sen söyle.</p><p class="note" id="juryDoneNote" hidden>yargı dağıtıldı. yeni savunmalar yarın 09:00. mahalle uyumaz, ara verir.<br>rozetler ve unvan ben'de.</p></div>
+    <div class="cta"><button class="btn" id="toKahve" hidden>mahalle kahvesine gir</button><p class="note" id="kahveNote"></p></div>
   </div>
 
-  <!-- 6. yargı -->
+  <!-- 6. mahalle kahvesi -->
   <div class="screen" id="s-j" hidden>
     <div id="jLock" hidden style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:10px;text-align:center">
-      <h1>önce kendine bak.</h1>
-      <p class="muted">üç durumu bitir, sonra başkasını yargıla. sıra diye bir şey var.</p>
+      <h1 id="jLockTitle"></h1>
+      <p class="muted" id="jLockText"></p>
     </div>
     <div id="jRun" hidden style="display:flex;flex-direction:column;gap:12px;flex:1">
-      <h1>haklı mı, haksız mı?</h1>
+      <h1>mahalle kahvesi.</h1>
       <p class="tag" id="jCount"></p>
       <div class="jcard"><div class="who" id="jWho"></div><div class="say" id="jSay"></div><div class="rev" id="jRev" hidden></div></div>
-      <p class="note" style="text-align:left">anonim savunma. kim olduğu belli değil, suç belli. oranlar temsili.</p>
-      <div class="cta"><div class="grid2" id="jVote"><button class="btn o" id="jNo">haksız</button><button class="btn o" id="jYes">haklı</button></div><button class="btn" id="jNext" hidden>sonraki</button></div>
+      <p class="note" style="text-align:left">anonim bahane. kim olduğu belli değil, suç belli. çoğunlukla aynı düşünürsen +1.</p>
+      <div class="cta"><div class="grid2" id="jVote"><button class="btn o" id="jNo">yatacak yeri yok</button><button class="btn o" id="jYes">kul kuldan razı</button></div><button class="btn" id="jNext" hidden>sonraki</button></div>
     </div>
     <div id="jDone" hidden style="display:flex;flex-direction:column;gap:12px;flex:1">
-      <h1>yargı dağıtıldı.</h1>
-      <div class="tiles"><div class="tile"><div class="n" id="jHit"></div><div class="l">mahalleyle uyum</div></div><div class="tile"><div class="n">3</div><div class="l">savunma</div></div><div class="tile"><div class="n" id="jChar"></div><div class="l">elinin ayarı</div></div></div>
-      <div class="sum" id="jOwn" hidden><span class="muted">senin bahanen</span><p id="jOwnText"></p></div>
-      <p class="note">oranlar temsili; gerçek oylar gerçek oy sistemiyle gelir. sabır bir erdemdir, bizde yoktur.</p>
-      <div class="cta"><button class="btn" id="jBack">günün hesabı</button></div>
+      <h1>kahve dağıldı.</h1>
+      <div class="tiles"><div class="tile"><div class="n" id="jN"></div><div class="l">bahane okudun</div></div><div class="tile"><div class="n" id="jHit"></div><div class="l">mahalleyle aynı</div></div><div class="tile"><div class="n" id="jChar"></div><div class="l">elinin ayarı</div></div></div>
+      <p class="muted" id="jDoneText"></p>
+      <div class="cta"><button class="btn o" id="jMore" hidden>üç bahane daha</button><button class="btn" id="jBack">günün hesabı</button></div>
     </div>
   </div>
 
-  <!-- 7. ben -->
+  <!-- 7. gece yarısı hesaplaşması -->
+  <div class="screen" id="s-night" hidden>
+    <h1>gece yarısı hesaplaşması.</h1>
+    <p class="muted">mahalle konuştu. bahanelerin ne kadar tuttu, uyum kaç puan getirdi.</p>
+    <div class="sum" id="nightBox"></div>
+    <div class="sum"><span class="muted">bakiye</span><span class="big" id="nightSum"></span><span class="muted" id="nightMevki"></span></div>
+    <div class="cta"><button class="btn" id="nightGo">tamam, anlaşıldı</button></div>
+  </div>
+
+  <!-- 8. ben -->
   <div class="screen" id="s-ben" hidden>
-    <div class="tiles"><div class="tile"><div class="n" id="bKarma"></div><div class="l">karma</div></div><div class="tile"><div class="n" id="bStreak"></div><div class="l">gün seri</div></div><div class="tile"><div class="n" id="bDays"></div><div class="l">gün buradasın</div></div></div>
+    <div class="tiles"><div class="tile"><div class="n" id="bKarma"></div><div class="l">bakiye</div></div><div class="tile"><div class="n" id="bStreak"></div><div class="l">gün seri</div></div><div class="tile"><div class="n" id="bDays"></div><div class="l">gün buradasın</div></div></div>
+    <div class="sum"><h2 id="bMevki"></h2><p class="muted" id="bMevkiSub"></p></div>
     <div class="sum"><h2 id="bTitle"></h2><p class="muted" id="bTitleSub"></p></div>
     <div class="sum"><h2>elinin ayarı</h2><p class="muted" id="bJury"></p></div>
     <div class="sum"><div style="display:flex;justify-content:space-between;align-items:baseline"><h2>rozetler</h2><span class="muted" id="bN"></span></div><div class="cards" id="bCards"></div><p class="muted" style="font-size:12px">gün kaçırırsan rozet silinmez, seri silinir. hayat da böyle bir şeydir zaten.</p></div>
+    <div style="display:flex;justify-content:center"><button class="link" id="share">dosta düşmana rezil ol</button></div>
+    <p class="note" id="shareNote" hidden>kart henüz yok. yapılacaklar listesinde, listenin de dibinde.</p>
   </div>
 
   <div class="tabs" id="tabs" hidden>
     <button class="tab on" data-tab="today">bugün</button>
-    <button class="tab" data-tab="jury">yargı</button>
+    <button class="tab" data-tab="jury">kahve</button>
     <button class="tab" data-tab="ben">ben</button>
   </div>
 
@@ -222,209 +226,82 @@ input[type=range]{width:100%;accent-color:var(--accent);margin:6px 0 2px}
   <div class="panel" id="panel" hidden>
     <div style="display:flex;justify-content:space-between;align-items:center"><b>test paneli</b><button class="link" id="panelClose">kapat</button></div>
     <div class="r" id="dayChips"></div>
-    <div class="r"><button class="chip" id="resetBtn">ilerlemeyi sıfırla</button></div>
-    <p class="note" style="text-align:left">gün seçince o günün içerikleri baştan oynanır. puanlar gerçek kayda yazılır. mahalle oranları temsili.</p>
+    <div class="r"><button class="chip" id="clockBtn">saati 21:00 yap</button><button class="chip" id="nightBtn">gece yarısını getir</button><button class="chip" id="resetBtn">ilerlemeyi sıfırla</button></div>
+    <p class="note" style="text-align:left">gün seçince o günün vukuatı baştan oynanır. mahalle oranları temsili; gerçek oylar sunucuyla gelir.</p>
   </div>
 </div>
 
 <script>
-// ---------- İÇERİK (yazım: TARZ.md) ----------
-// her içerik: q (durum), k (soru), img (isteğe bağlı), o (seçenekler), b (bahaneler: günün ilk kötü seçiminden sonra).
-// seçenek: t (itiraf), d (çubuk), h (vuruş), r (sahne + iğne), p (mahalle oranı; TEMSİLİ). bahane: t, p (mahallenin haklı bulma oranı; TEMSİLİ).
+// ---------- İÇERİK (URUN-v2.md: her ikilemde iki kötü şık, ikisi de ceza) ----------
+// seçenek: t, P (ceza), h (vuruş), r (sahne + iğne), p (mahallede bu şıkkı seçen oranı; TEMSİLİ)
 const C = {
-// --- 1. gün ---
-yoldayim:{q:"arkadaşın 20 dakikadır kafede bekliyor. sen hâlâ evdesin.",k:"ne yazarsın?",
- o:[
-  {t:"yoldayım, 5 dk. (yolda değilim.)",d:-5,h:"beş dakika, otuz beş oldu.",r:"arkadaşın beklemiyor, yas tutuyor. sen de bir dahakine 'çıkmadım' de, dünya durmaz.",p:47},
-  {t:"daha çıkmadım, 30 dk sürer.",d:4,h:"dürüstlük kazandı.",r:"geç kaldın ama yalan söylemedin. arkadaşın bir kahve daha söyledi, gönlü rahat. nadir bir türsün, nesli korunmalı.",p:31},
-  {t:"telefonum şarjda kalmış.",d:-3,h:"telefon şarjda, sen yataktaydın.",r:"ikinizi de gördüm. telefonun da gördü, o da bir şey demedi.",p:22}
- ],b:[{t:"o da geçen hafta 40 dakika geç gelmişti.",p:68},{t:"çıkıyordum, annem aradı. annem aramasıyla biter mi?",p:54},{t:"zihnen oradaydım. bedenim gecikti.",p:37}]},
-sarma:{q:"arkadaşlarınla plan yaptın. annen yazdı: \"akşam sarma var, geliyor musun?\"",k:"ne cevap verirsin?",
- o:[
-  {t:"geliyorum anne. (gitmeyeceksin.)",d:-5,h:"sarma seni bekliyor.",r:"annen de. sen bardasın. sarma soğur, annen soğumaz; o ayrı mesele.",p:38},
-  {t:"bu akşam plan oldu, yarın gelirim.",d:3,h:"sarma yarın da sarma.",r:"annen bir gün küser, iki gün sever. yarın git, geç kalma, yoldayım deme.",p:44},
-  {t:"görüldü at, cevap yazma.",d:-4,h:"mavi tik, sıfır cevap.",r:"annen şu an teyzene anlatıyor. teyzen de yengene. akşama kadar gündemsin.",p:18}
- ],b:[{t:"annem 'geliyorum'u duyunca mutlu oluyor. mutluluğu uzattım.",p:41},{t:"sarma yarın da olur, arkadaşlar bugün burada.",p:58},{t:"gidecektim, otobüs gelmedi. (durağa gitmedim.)",p:23}]},
-hesap:{q:"dört kişi yemek yediniz. sen kebap, deniz çorba. \"eşit bölelim\" dendi.",k:"ne dersin?",
- o:[
-  {t:"eşit bölelim, ne olacak.",d:-4,h:"kebabını deniz ödedi.",r:"deniz bir şey demedi. bir dahaki yemeğin \"gelemeyeceğim\" mesajını şimdiden yazıyor. afiyet olsun, çorba parasıyla.",p:41},
-  {t:"deniz çorbasını ödesin, gerisini biz bölelim.",d:4,h:"masada iki saniye sessizlik.",r:"sonra dört telefon birden hesap makinesi. deniz 90 lira ödedi, sen \"muhasebe\" lakabı aldın. lakap kalıcı, haklılık geçici.",p:35},
-  {t:"sessizce deniz'in farkını ben öderim.",d:1,h:"garson seni çok sevdi.",r:"deniz fark etmedi, kebapçılar da. 750 ödedin; kimse bilmiyor, garson biliyor. iyilik yaptın, kimse görmedi, biber gördü, o kadar.",p:24}
- ],b:[{t:"hesap makinesi açmak masayı bozar; dostluk 600 lira eder.",p:23},{t:"deniz diyet yapıyor, mesele para değil çorba.",p:31},{t:"geçen sefer ben çorba içmiştim, kimse bölmemişti.",p:62}]},
-// --- 2. gün ---
-sinif:{f:"foto",q:"hoca ders anlatıyor.",k:"sen hangisisin?",img:"sinif.webp",
- o:[
-  {t:"uyuyan",x:38,y:72,d:-2,h:"uyku da bir tavır.",r:"hoca seni görüyor, sadece pes etmiş. sen de pes etmişsin; ortada bir anlaşma var.",p:34},
-  {t:"dinleyen",x:72,y:46,d:2,h:"hoca ikna oldu.",r:"elini çeneye koydun, dinler gibi yaptın. sen ikna oldun mu, bilmiyorum. hoca da bilmiyor, olsun.",p:21},
-  {t:"not alan",x:46,y:47,d:4,h:"sınıfın yedek beyni sensin.",r:"sınavdan önce 14 kişi senden fotoğraf isteyecek. hazırlan. teşekkür eden olmayacak, ona da hazırlan.",p:17},
-  {t:"gülen",x:91,y:66,d:-1,h:"kameraya bakan tek kişi.",r:"fotoğrafçı da sen değilsin. ders seni ilgilendirmiyor, kamera ilgilendiriyor.",p:28}
- ],b:[{t:"gece üçe kadar ders çalıştım. (dizi izledim.)",p:29},{t:"hoca zaten slaytları atıyor.",p:66},{t:"uyumadım, gözlerimi dinlendirdim.",p:44}]},
-video:{q:"arkadaşın gece 1'de sekiz komik video attı. sabah hepsini izledin.",k:"ne yaparsın?",
- o:[
-  {t:"hiçbirine tepki vermem.",d:-2,h:"sekiz görüldü, sıfır ses.",r:"arkadaşın \"izledi mi acaba\" diye profiline baktı. iki kere. sen o sırada başkasının videosuna gülüyordun.",p:36},
-  {t:"sekizine birden tek \"hahaha\".",d:1,h:"toptan gülmek.",r:"arkadaşın hangisine güldüğünü soracak. hazır ol: üçüncüsü de. yalan söyleme, üçüncüyü atlamıştın.",p:44},
-  {t:"sonuncuya \"aaa bunu görmüştüm\" yazarım.",d:-3,h:"görmemiştin.",r:"arkadaşın da biliyor. video dün çekilmiş. kendi kendini yakan nadir insanlardansın.",p:20}
- ],b:[{t:"sekiz videoya sekiz emoji bir mesai.",p:71},{t:"gülüyordum ama içimden; arkadaşım beni tanır.",p:33},{t:"üçüncüden sonra ses kapandı, gerisini tahmin ettim.",p:48}]},
-kargo:{q:"kargon komşuya bırakılmış. komşu 22:10'da eve geldi, ışığı yandı.",k:"ne yaparsın?",
- o:[
-  {t:"hemen zile basarım, daha yeni geldi.",d:-2,h:"bir ayağı içeride, bir ayağı dışarıda.",r:"komşu paketi uzattı, \"kolay gelsin\" demedi. demediğini yarın apartman grubunda okursun, hem de isimsiz.",p:29},
-  {t:"sabah işe giderken alırım.",d:3,h:"sabah paket kapında.",r:"üstünde \"iyi günler\" notu, yazısı güzel. komşun seni görmeden komşuluk yaptı. sen de görmeden teşekkür et; böyle gidiyor işte.",p:52},
-  {t:"kuryeye \"ben evdeydim\" diye şikâyet yazarım.",d:-1,h:"şikâyet \"incelemeye alındı\".",r:"kurye bugün 40 paket taşıdı, seninki kırkıncı. paketi yine sabah alacaksın; şikâyet de yarın öğlen okunacak.",p:19}
- ],b:[{t:"ışık yanıyordu, uyumuyordu. paket benim.",p:35},{t:"komşu da bana hep akşam zil çalıyor.",p:57},{t:"kuryeyi şikâyet ettim, komşuyu değil; sistem düzelsin.",p:49}]},
-// --- 3. gün ---
-grup:{q:"aile grubu bir günde 212 mesaj. teyzen her sabah günaydın çiçeği atıyor.",k:"ne yaparsın?",
- o:[
-  {t:"sessize alırım, bir yıllığına.",d:-1,h:"teyzen fark etti.",r:"çiçeğe kalp atmayan tek kişi sensin. bayramda yüz yüze soracak; sen \"telefon bozuktu\" diyeceksin, inanmayacak.",p:58},
-  {t:"her sabah çiçeğe kalp atarım.",d:2,h:"teyzenin gözdesi.",r:"teyzen seni \"çok iyi çocuk\" diye anlatıyor. çiçekler artık sana özel geliyor. kalbin sabah 7'ye ayarlı, tebrikler.",p:27},
-  {t:"gruptan çıkarım.",d:-4,h:"\"yanlışlıkla çıkmış\" diye geri eklendin.",r:"çıkışın 40 saniye sürdü. şimdi herkes biliyor. aile grubundan çıkmak eylemi başarısız; tekrar dene, yine olmaz.",p:15}
- ],b:[{t:"212 mesajın 211'i çiçek. ben çiçekçi değilim.",p:84},{t:"çıkmadım, ara verdim.",p:39},{t:"teyzem zaten arayıp anlatıyor, grup fazla.",p:61}]},
-borek:{q:"masada son börek dilimi. herkes \"sen al\" dedi, üçüncü tur.",k:"ne yaparsın?",
- o:[
-  {t:"alırım. (zaten iki tane yedim.)",d:-2,h:"üçüncü börek.",r:"herkes saydı. kimse bir şey demedi; bu daha kötü. mide senin, hafıza onların.",p:33},
-  {t:"dilimi ikiye bölerim, yarısını alırım.",d:3,h:"nezaket müzakeresi bitti.",r:"diğer yarı sabaha kadar durdu. sabah sen yedin. diplomat dediğin böyle olur: gece yarısı, buzdolabı önünde.",p:29},
-  {t:"\"ben tokum\" deyip bakmaya devam ederim.",d:-1,h:"tok değilsin.",r:"börek sana baktı, sen böreğe. teyzen gördü, tabağına koydu. yalan söyledin, yine de yedin; ikisini birden becerdin.",p:38}
- ],b:[{t:"üçüncü turda 'sen al' demek 'al' demektir.",p:57},{t:"böreği ben yaptım, hakkım.",p:72},{t:"tok değildim, kibardım.",p:45}]},
-spoiler:{q:"arkadaşın \"finali söyleme\" dedi. sen finali biliyorsun.",k:"ne dersin?",
- o:[
-  {t:"söylemem ama o karaktere çok bağlanma.",d:-3,h:"söyledin.",r:"teknik olarak sustun. arkadaşın altıncı bölümden sonra sana küstü. ağzını tutamayan insan kategorisi; hoş geldin.",p:41},
-  {t:"söylemem, izleyince konuşuruz.",d:3,h:"sabır.",r:"arkadaşın iki ay sonra bitirdi. sabah 7'de \"konuşalım\" yazdı. iki ay sustun, iki saat konuşacaksın; hak ettin.",p:44},
-  {t:"ağzımla söylemem, yüzümle söylerim.",d:-2,h:"yüzün konuştu.",r:"kaşını kaldırdın. arkadaşın \"kim ölüyor\" dedi; sen \"kimse\" dedin, yüzün \"biri\" dedi. yüzünü de sessize al.",p:15}
- ],b:[{t:"söylemedim, uyardım. uyarı iyiliktir.",p:29},{t:"yüzüm benden bağımsız çalışıyor.",p:52},{t:"o da bana geçen yıl finali söylemişti.",p:63}]},
-// --- 4. gün ---
-tabak:{q:"komşunun börek tabağı iki haftadır sende. tabak boş.",k:"ne yaparsın?",
- o:[
-  {t:"bugün boş götürürüm.",d:3,h:"tabak eve döndü.",r:"komşu böreği değil, tabağı bekliyordu. kapıda \"ya hiç gerek yoktu\" dedi. gerek vardı; ikiniz de biliyorsunuz.",p:31},
-  {t:"kurabiye yapınca götürürüm.",d:-3,h:"kurabiye günü takvimde yok.",r:"tabak sende oturma izni aldı. komşu ikinci böreği poşetle verdi. mesaj alındı mı? alınmadı; poşet yine geldi.",p:47},
-  {t:"içine market bisküvisi koyarım.",d:0,h:"paketi tanıdı.",r:"çaba görüldü, bisküvi de görüldü. ikisi de konuşulmadı. araf tam olarak burası.",p:22}
- ],b:[{t:"boş tabak götürmek ayıp, annem öyle öğretti.",p:66},{t:"kurabiye tarifi bekliyorum, tabak da bekliyor.",p:28},{t:"komşu da tabağı unutmuş olabilir, hatırlatmadım.",p:35}]},
-ses:{q:"\"saat kaçta?\" diye sordun. dört dakikalık ses kaydı geldi.",k:"ne yaparsın?",
- o:[
-  {t:"dinlemeden \"tamam\" yazarım.",d:-3,h:"saati bilmiyorsun.",r:"bir saat erken gittin. kaydın ikinci dakikasında \"aslında yarın\" deniyordu. yarın da gideceksin, yine erken.",p:39},
-  {t:"\"sadece saati yaz\" derim.",d:2,h:"haklısın.",r:"arkadaşın cevabı ses kaydıyla verdi: \"sekizde.\" kırk saniye. haklı olmak bir şey değiştirmedi ama güzel bir duygu.",p:34},
-  {t:"dinlerim, 1.5 hızda.",d:1,h:"dört dakika, iki buçuk oldu.",r:"saat sekizmiş. üçüncü dakikada komşusunun kedisini de öğrendin. kedinin adı duman; bu bilgi lazım olacak.",p:27}
- ],b:[{t:"dört dakika dinlemek saat sormaktan uzun.",p:66},{t:"'tamam' her şeye uyar.",p:40},{t:"1.5 hızda bile uzundu; 2 yoktu.",p:51}]},
-sira:{q:"kasada sıradasın, elinde tek süt. öndeki \"geç sen\" dedi. arkada beş kişi var.",k:"ne yaparsın?",
- o:[
-  {t:"geçerim, teşekkür ederim.",d:1,h:"geçtin.",r:"beş kişi sana değil, \"geç sen\" diyene baktı. sen süt aldın, o bakış aldı. iyilik onun, kasa senin.",p:48},
-  {t:"geçerim, arkadaşımı da çağırırım; onda da iki şey var.",d:-5,h:"iki şey, altı poğaça.",r:"arkadaşın raftan seçmeye başladı. beş kişi artık sana bakıyor. kasada sevilmeyen insan olmak eylemi tamamlandı.",p:12},
-  {t:"\"yok yok, sıra sırada\" derim.",d:2,h:"sıra bozulmadı.",r:"kimse teşekkür etmedi; kimse mırıldanmadı da. bu kasada bu bir ödül; al, cebine koy.",p:40}
- ],b:[{t:"arkadaşım da tek şey alacaktı, poğaçalar sonradan oldu.",p:22},{t:"'geç sen' dedi, ben demedim.",p:47},{t:"beş kişi zaten bekliyordu, iki dakika fark etmez.",p:18}]},
-// --- 5. gün ---
-fikir:{q:"dün cem'e anlattığın fikri, cem toplantıda kendi fikri diye sundu. müdür \"işte bu\" dedi. sıra sende.",k:"ne dersin?",
- o:[
-  {t:"\"cem'le dün konuşmuştuk, şu kısmı da ekleyelim.\"",d:4,h:"fikir ikiye bölündü.",r:"cem bir saniye kızardı. müdür \"ikinizin\" yazdı. yarın cem cümlesinin ortasında duracak; sen de gülümseyeceksin, tatlı tatlı.",p:36},
-  {t:"susarım, akşam müdüre mesaj atarım.",d:-4,h:"gece mesajı.",r:"müdür sabah cem'e sordu, cem \"beraber bulduk\" dedi. artık ikiniz de şüphelisiniz. gece mesajı atan insan; iyi bir kategori değil.",p:18},
-  {t:"susarım, hiçbir şey yapmam.",d:-2,h:"fikir artık cem'in.",r:"müdür \"cem'in projesi\" diye yazdı. sen o projede çalışıyorsun. kendi fikrinde taşeron; güzel unvan.",p:46}
- ],b:[{t:"yüz yüze söylesem cem rezil olurdu; mesaj daha nazik.",p:38},{t:"fikir ortak sayılır, yemekte beraber konuştuk.",p:27},{t:"müdürün hakkı doğruyu bilmek; saatin önemi yok.",p:44}]},
-dugun:{q:"kuzenin şehir dışında evleniyor. bütçen ya yola ya takıya yetiyor.",k:"ne yaparsın?",
- o:[
-  {t:"giderim, takmam, sabaha kadar sandalye toplarım.",d:3,h:"salonda sen vardın.",r:"takı defterinde boş satır. teyze defteri okur, kuzen salonu hatırlar. sandalye toplayan adama laf olmaz.",p:38},
-  {t:"takıyı gönderirim, görüntülü ararım.",d:0,h:"çeyrek geldi, sen gelmedin.",r:"kuzen \"o nerede?\" dedi. ekranda halay çekemedin. çeyrek halay çekemez; bunu bilen biliyor.",p:34},
-  {t:"giderim, boş zarf takarım. (sonra tamamlarım.)",d:-5,h:"boş zarf.",r:"zarfı açan teyze. tamamlanmadı; teyze unutmadı. boş zarfın da bir ağırlığı var, teyze tarttı.",p:28}
- ],b:[{t:"zarfı sonra tamamlayacaktım, unuttum.",p:19},{t:"takı borç değil, jest. jestim geç kaldı.",p:12},{t:"yol 2 bin, çeyrek 7 bin. matematik.",p:55}]},
-hediye:{q:"ofis grubuna \"hediye alıyoruz, istemeyen yazsın\" düştü. görmedin. sabah borcun geldi: 500 lira.",k:"ne yaparsın?",
- o:[
-  {t:"öderim, sesimi çıkarmam.",d:-1,h:"sessiz ortak.",r:"500 gitti. hediye kahve makinesi; sen çay içiyorsun. ofiste çay içen insan, hep ödeyen insan.",p:49},
-  {t:"\"görmemiştim, bu sefer yokum\" yazarım.",d:2,h:"geç ama dürüst.",r:"üç kişi daha \"ben de görmemiştim\" yazdı. kahve makinesi filtre kahve oldu. sen başlattın, kimse teşekkür etmedi; normal.",p:31},
-  {t:"öderim, kartı imzalamam.",d:-3,h:"parayı verdin, kalbi vermedin.",r:"hediye alan kişi kartta adını aradı. bulamadı. 500 lira verip düşman olmak; az bulunur beceri.",p:20}
- ],b:[{t:"para verdim, yeter; kart imzası ekstra.",p:26},{t:"mesajı görmedim; görmediğim şeye ortak olamam.",p:64},{t:"ben çay içiyorum, kahve makinesi bana ne.",p:43}]},
-// --- 6. gün ---
-makine:{q:"gece 23:00, elektrik ucuz. makineyi kurdun. alt komşu duvara vurdu.",k:"ne yaparsın?",
- o:[
-  {t:"devam, 00:10'da biter.",d:-3,h:"üçüncü hafta.",r:"komşu sabah 6'da kalkıyor. yarın da vuracak; sen de yarın da ucuz yıkayacaksın. ayda 40 lira kâr, bir komşu zarar.",p:31},
-  {t:"kapatırım, sabah çalıştırırım.",d:2,h:"fatura on lira fazla.",r:"komşu uyudu. çamaşır sabah yıkandı, kimse ölmedi. on liraya huzur; bu fiyata başka yerde yok.",p:45},
-  {t:"ben de duvara vururum.",d:-5,h:"duvar konuşuyor.",r:"komşu geri vurdu. artık ikiniz de mors biliyorsunuz. apartman toplantısında görüşürsünüz; gündem maddesi sensin.",p:24}
- ],b:[{t:"elektrik gece ucuz, bunu ben icat etmedim.",p:48},{t:"duvara vurmak komşunun diliydi, ben tercüme ettim.",p:21},{t:"00:10 gece sayılmaz; gece 01:00'de başlar.",p:30}]},
-kahve:{q:"arkadaşın \"harika bir kahveci buldum, seni götüreyim\" dedi. hesap geldi: iki kahve 360 lira.",k:"ne yaparsın?",
- o:[
-  {t:"beklerim; \"götüreyim\" dedi.",d:-2,h:"yol tarifiydi.",r:"arkadaşın kartını uzattı, \"ayrı mı\" diye sordu. sen \"tabii\" dedin, içinden değil. fiil bilgin zayıf, kahve bilgin pahalı.",p:37},
-  {t:"kendi kahvemi öderim.",d:2,h:"kahve 180 lira.",r:"arkadaşın \"bir dahaki benden\" dedi. bir dahaki olmadı. olmayacak da; ikiniz de biliyorsunuz.",p:44},
-  {t:"\"sen buldun sen öde\" derim, şaka gibi.",d:-3,h:"şaka değildi.",r:"arkadaşın güldü, ödedi, bir daha mekân önermedi. 180 liraya bir arkadaş; pahalı değil ama artık senin değil.",p:19}
- ],b:[{t:"'götüreyim' dedi; götürmek ısmarlamaktır.",p:36},{t:"şakaydı, gülmedi; onun sorunu.",p:17},{t:"180 liralık kahvede kimse ciddi olamaz.",p:59}]},
-toplanti:{q:"online toplantı, dördüncü saat.",k:"sen hangisisin?",
- o:[
-  {t:"kamera kapalı, \"bağlantım kötü\" diyen",d:-2,h:"bağlantın iyi, kahvaltın güzel.",r:"herkes biliyor. müdür de biliyor; o da kahvaltıda. toplantı boş, sen de biliyorsun; yine de yalan söyledin.",p:41},
-  {t:"\"bir şey ekleyeceğim\" deyip aynısını söyleyen",d:-3,h:"katkın: eko.",r:"toplantı on dakika uzadı. on dakika çarpı on iki kişi: iki saat. iki saat insan ömrü, senin yüzünden; afiyet olsun.",p:17},
-  {t:"not alan tek kişi",d:3,h:"notları kimse istemeyecek.",r:"sen yine de aldın. üç ay sonra biri \"o toplantıda ne denmişti\" diyecek, sen bileceksin. o gün senin günün; bekle.",p:22},
-  {t:"\"mail atsak olmaz mıydı\" diye düşünüp susan",d:0,h:"olurdu.",r:"herkes düşündü. mail hâlâ yok. sen de susarak katkı sağladın; araf tam burası.",p:20}
- ],b:[{t:"bağlantım gerçekten kötüydü. (kahvaltıda.)",p:52},{t:"aynı şeyi söyledim çünkü kimse duymamıştı.",p:34},{t:"dördüncü saatte herkes eko.",p:70}]},
-// --- 7. gün ---
-iptal:{q:"akşam buluşmaya gitmeyeceğini öğlen anladın. arkadaşın \"masadayım\" yazdı.",k:"ne yazarsın?",
- o:[
-  {t:"\"çok özür, gelemeyeceğim.\" (öğlenden beri biliyordun.)",d:-4,h:"dört saat biliyordun.",r:"arkadaşın iki kişilik masada tek oturdu. garson ikinci menüyü aldı. özür iyi, zamanlama rezalet.",p:35},
-  {t:"\"yoldayım.\" (değilsin.)",d:-5,h:"yine mi.",r:"arkadaşın bir saat bekledi. artık iki yalan var ve ikisini de biliyor. rozetin varsa ikinci yıldızını al.",p:22},
-  {t:"ararım: \"çıkamıyorum, çok ayıp ettim.\"",d:2,h:"geç ama sesli.",r:"arkadaşın masayı kaldırdı; kızgın değil, kırgın. yarın geçer. aramak zor; sen aradın, buraya kadar iyi.",p:43}
- ],b:[{t:"öğlen biliyordum ama kesin değildi; akşam kesinleşti.",p:31},{t:"zihnen yoldaydım.",p:24},{t:"o da geçen ay iptal etmişti, hem de masada.",p:58}]},
-termos:{q:"sana üçüncü termos hediye geldi. arkadaşın \"termos lazım\" dedi.",k:"ne yaparsın?",
- o:[
-  {t:"kutusuyla veririm, \"yeni aldım\" derim.",d:-3,h:"kart konuştu.",r:"kutuda \"iyi ki doğdun\" kartı vardı. arkadaşın okudu. kart iki kelime, yalan bir ömür.",p:22},
-  {t:"veririm: \"hediye gelmişti, bende boşta.\"",d:3,h:"termos çay gördü.",r:"arkadaşın mutlu, termos mutlu. hediyeyi veren hiç öğrenmedi. herkes kazandı; nadir olay.",p:45},
-  {t:"vermem, kutuda bekler.",d:-1,h:"termos müzesi.",r:"üç termos, sıfır çay. dördüncüsü yolda. müzeye bilet kes, belki kurtarırsın.",p:33}
- ],b:[{t:"'yeni aldım' yalan değil; yeni geldi.",p:31},{t:"kart küçücüktü, kim okur.",p:27},{t:"üç termos biriktirmek koleksiyon, stok değil.",p:49}]},
-afis:{q:"aile grubuna \"bizimki tasarımcı, afişi akşama yapar\" yazıldı. sana soran olmadı.",k:"ne yaparsın?",
- o:[
-  {t:"sessizce yaparım.",d:-3,h:"artık görev.",r:"afiş güzel oldu. bayram afişi de sende, düğün afişi de, mevlit de. kapıya tabela as: ücretsiz tasarım, 7/24.",p:46},
-  {t:"grupta \"bana soran oldu mu\" yazarım.",d:0,h:"doğru soru, yanlış salon.",r:"teyzeler okudu, \"aa kırıldı\" dendi. afiş yine sende. bir de kırgın oldun; iki iş birden.",p:18},
-  {t:"söz verene özelden: \"takvimimi sen mi yönetiyorsun?\"",d:3,h:"doğru kapı.",r:"afiş yine istendi, bu kez sorarak. bir de \"kusura bakma\" geldi. sınır koydun, kimse ölmedi; not al.",p:36}
- ],b:[{t:"yapmasam teyzem yapardı, daha kötü olurdu.",p:61},{t:"grupta sormak kavga, sessiz yapmak barış.",p:42},{t:"tasarımcıyım, afiş 10 dakika. (3 saat.)",p:35}]},
-// --- ayıp ölçeği (f:"olcek"): 0–10 kaydırak; üç bant = üç seçenek; biber'in kendi fikri var, uzak kalan laf yer ---
-o_grup:{f:"olcek",q:"aile grubu bir günde 212 mesaj.",k:"sessize almak ne kadar ayıp?",lo:"hiç ayıp değil",hi:"rezalet",
- o:[
-  {t:"0–3",d:2,h:"doğru cevap.",r:"212 mesajın 211'i çiçek. sessize almak ayıp değil, hayatta kalmak. teyzen de biliyor, bozuntuya vermiyor.",p:46},
-  {t:"4–7",d:0,h:"ortada kaldın.",r:"ayıp mı değil mi bilmiyorsun ama sessize aldığın kesin. ortada duran insanı iki taraf da sevmez.",p:38},
-  {t:"8–10",d:-2,h:"rezalet dedin.",r:"her sabah çiçeğe kalp atan sensin. teyzen seni seviyor, mahalle seni anlıyor, biz seni yargılıyoruz.",p:16}
- ]},
-o_yoldayim:{f:"olcek",q:"\"yoldayım\" yazdın, evden çıkmamıştın.",k:"ne kadar ayıp?",lo:"herkes yapıyor",hi:"rezalet",
- o:[
-  {t:"0–3",d:-2,h:"hiç ayıp değil dedin.",r:"tabii değil, sen her gün yapıyorsun. arkadaşın 35 dakika bekledi; o da \"hiç ayıp değil\" dedi, içinden değil.",p:29},
-  {t:"4–7",d:0,h:"orta dedin.",r:"herkes yapıyor diye ayıp olmaktan çıkmıyor. ortada durdun, arkadaşın hâlâ kafede.",p:41},
-  {t:"8–10",d:2,h:"rezalet dedin.",r:"doğru. şimdi telefonuna bak: son \"yoldayım\"ın tarihi ne? mahalle de baktı.",p:30}
- ]},
-o_termos:{f:"olcek",q:"sana gelen hediyeyi başkasına verdin.",k:"ne kadar ayıp?",lo:"hiç ayıp değil",hi:"rezalet",
- o:[
-  {t:"0–3",d:-1,h:"hiç ayıp değil dedin.",r:"termos çay gördü, tamam. ama kartı çıkarmayı unutan sensin; ayıp termosta değil, kartta.",p:44},
-  {t:"4–7",d:2,h:"duruma göre dedin.",r:"doğru: hatıra ayrı, üçüncü termos ayrı. araf bazen doğru cevaptır; nadir, ama olur.",p:39},
-  {t:"8–10",d:-1,h:"rezalet dedin.",r:"dolabında üç termos var. müze açacaksın, bilet keseceksin; ayıp olmasın diye çay içmeyeceksin.",p:17}
- ]},
-o_kofte:{f:"olcek",q:"ofis buzdolabında isim yazılı kapta köfte. isim senin değil.",k:"yemek ne kadar ayıp?",lo:"ortak dolap, ortak köfte",hi:"rezalet",
- o:[
-  {t:"0–3",d:-3,h:"hiç ayıp değil dedin.",r:"köfteyi yedin, isim okumadın. yarın kabın üstünde senin ismin olacak, altında bir not.",p:9},
-  {t:"4–7",d:0,h:"orta dedin.",r:"ortak dolap ortak değil, bunu herkes biliyor. sen \"orta\" dedin, köfte gitti.",p:23},
-  {t:"8–10",d:2,h:"rezalet dedin.",r:"doğru. kendi köftene isim yazan insan olarak konuşuyorsun; mahalle seninle, kap da seninle.",p:68}
- ]},
-// --- bu mu şu mu (f:"ikili"): iki kötü, biri daha az kötü ---
-i_tuvalet:{f:"ikili",q:"hesap geldi.",k:"hangisi daha az ayıp?",
- o:[
-  {t:"hesap gelince tuvalete gitmek",d:-3,h:"böbrek taşı.",r:"adisyon masaya gelince tuvalet. döndüğünde hesap ödenmiş, arkadaşların susmuş. susmak da bir fatura.",p:31},
-  {t:"\"bu sefer ben ödeyeyim\" deyip kartı uzatmamak",d:-1,h:"cümle gitti, kart gitmedi.",r:"herkes duydu, kimse kartı görmedi. niyete puan yok, karta var.",p:69}
- ],b:[{t:"gerçekten sıkışmıştım.",p:18},{t:"kartım yanımda değildi. (yanımdaydı.)",p:12},{t:"geçen sefer ben ödemiştim.",p:57}]},
-i_corap:{f:"ikili",q:"misafirliktesin, ayakkabıyı çıkardın, çorabın delik.",k:"hangisi daha az ayıp?",
- o:[
-  {t:"başparmağı halının altına saklamak",d:0,h:"tüm akşam heykel.",r:"başparmağını üç saat halıya gömdün. kimse görmedi; ayağın uyuştu, onur kurtuldu.",p:54},
-  {t:"\"çorabım delik, kusura bakmayın\" demek",d:2,h:"itiraf.",r:"herkes güldü, ev sahibi çorap getirdi. mahcubiyet dokuz saniye sürdü; saklasan üç saat sürerdi.",p:46}
- ]},
-i_espri:{f:"ikili",q:"espri yaptın, kimse gülmedi.",k:"hangisi daha az ayıp?",
- o:[
-  {t:"espriyi açıklamak",d:-2,h:"anatomi dersi.",r:"açıklama espriden uzun sürdü. ortam buz oldu; kimse gülmedi, sen de gülmedin.",p:22},
-  {t:"\"neyse\" deyip telefona bakmak",d:-1,h:"geri çekildin.",r:"espri öldü, cenazesini kaldırmadın. telefona baktın; herkes rahatladı, sen hariç.",p:78}
- ],b:[{t:"espri iyiydi, ortam kötüydü.",p:44},{t:"açıklamasam anlamayacaklardı.",p:19},{t:"gülen vardı, içinden.",p:33}]},
-i_ucak:{f:"ikili",q:"uçakta üç saat, dar koltuk.",k:"hangisi daha az ayıp?",
- o:[
-  {t:"koltuğu sonuna kadar yatırmak",d:-2,h:"dizler göğüste.",r:"arkadaki yolcu üç saat kendi dizini öptü. sen uyudun, o seni unutmadı.",p:58},
-  {t:"öndeki yatınca koltuğu tekmelemek",d:-3,h:"tekme.",r:"koltuk yatık kaldı, sen bir de kaba oldun. iki saat sonra ikiniz de aynı pasaport sırasındasınız.",p:42}
- ],b:[{t:"koltuk yatıyorsa yatırılır, kuralı ben koymadım.",p:49},{t:"tekme değildi, dizim çarptı. (üç kere.)",p:21},{t:"gece uçuşu, herkes yatırıyor.",p:55}]},
-i_dedikodu:{f:"ikili",q:"dedikodu mesajını yanlış kişiye attın: tam da hakkında konuştuğun kişiye.",k:"hangisi daha az ayıp?",
- o:[
-  {t:"\"pardon, başka birine gidecekti\" yazmak",d:-2,h:"itiraf, yanlış kapıdan.",r:"mesajı geri alamadın, bir de \"başkasına gidecekti\" dedin. şimdi iki kişi kırgın: o ve o.",p:37},
-  {t:"\"şaka şaka, seninle dalga geçiyorduk\" yazmak",d:-3,h:"ikinci yalan.",r:"ilk mesaj kazaydı, ikincisi karar. yarın asansörde görüşürsünüz; asansör dokuz kat.",p:63}
- ],b:[{t:"telefon kendi gönderdi.",p:8},{t:"zaten yüzüne de söylerdim. (söylemezdim.)",p:27},{t:"herkes aynısını düşünüyor, ben yazdım.",p:46}]}
+yoldayim:{q:"arkadaşın 20 dakikadır kafede bekliyor. sen hâlâ evdesin.",k:"ne yazarsın?",o:[
+  {t:"yoldayım, 5 dk. (yolda değilim.)",P:5,h:"beş dakika, otuz beş oldu.",r:"arkadaşın beklemiyor, yas tutuyor. olsun, biz görmedik; mahalle gördü.",p:58},
+  {t:"telefonum şarjda kalmış.",P:3,h:"telefon şarjda, sen yataktaydın.",r:"ikinizi de gördüm. telefonun da gördü, o da bir şey demedi. sen bilirsin tabii.",p:42}]},
+sinif:{f:"foto",img:"sinif.webp",q:"hoca ders anlatıyor.",k:"sen hangisisin?",o:[
+  {t:"uyuyan",x:38,y:72,P:3,h:"uyku da bir tavır.",r:"hoca seni görüyor, sadece pes etmiş. sen de pes etmişsin; ortada bir anlaşma var.",p:55},
+  {t:"kameraya gülen",x:91,y:66,P:2,h:"kameraya bakan tek kişi.",r:"fotoğrafçı da sen değilsin. ders seni ilgilendirmiyor, kamera ilgilendiriyor.",p:45}]},
+hesap:{q:"dört kişi yediniz. sen kebap, deniz çorba. \"eşit bölelim\" dendi.",k:"ne dersin?",o:[
+  {t:"eşit bölelim, ne olacak.",P:4,h:"kebabını deniz ödedi.",r:"deniz bir şey demedi. bir dahaki yemeğin \"gelemeyeceğim\" mesajını şimdiden yazıyor. afiyet olsun, çorba parasıyla.",p:63},
+  {t:"\"ben öderim\" derim; kart boş çıkar.",P:3,h:"kart reddedildi.",r:"\"ben öderim\" dedin, kart \"hayır\" dedi. deniz çorbasının üstüne senin kebabı da ödedi. mahalle bunu unutmaz.",p:37}]},
+sarma:{q:"arkadaşlarınla plan yaptın. annen yazdı: \"akşam sarma var, geliyor musun?\"",k:"ne cevap verirsin?",o:[
+  {t:"geliyorum anne. (gitmeyeceksin.)",P:5,h:"sarma seni bekliyor.",r:"annen de. sen bardasın. sarma soğur, annen soğumaz; o ayrı mesele.",p:54},
+  {t:"görüldü at, cevap yazma.",P:4,h:"mavi tik, sıfır cevap.",r:"annen şu an teyzene anlatıyor. teyzen de yengene. akşama kadar gündemsin.",p:46}]},
+tuvalet:{q:"hesap geldi.",k:"hangisi sensin?",o:[
+  {t:"hesap gelince tuvalete gitmek",P:5,h:"böbrek taşı.",r:"adisyon masaya gelince tuvalet. döndüğünde hesap ödenmiş, arkadaşların susmuş. susmak da bir fatura.",p:41},
+  {t:"\"bu sefer ben ödeyeyim\" deyip kartı uzatmamak",P:3,h:"cümle gitti, kart gitmedi.",r:"herkes duydu, kimse kartı görmedi. niyete puan yok, karta var.",p:59}]},
+grup:{q:"aile grubu bir günde 212 mesaj. teyzen her sabah günaydın çiçeği atıyor.",k:"ne yaparsın?",o:[
+  {t:"sessize alırım, bir yıllığına.",P:2,h:"teyzen fark etti.",r:"çiçeğe kalp atmayan tek kişi sensin. bayramda yüz yüze soracak; \"telefon bozuktu\" diyeceksin, inanmayacak.",p:71},
+  {t:"gruptan çıkarım.",P:5,h:"\"yanlışlıkla çıkmış\" diye geri eklendin.",r:"çıkışın 40 saniye sürdü. şimdi herkes biliyor. aile grubundan çıkmak eylemi başarısız; tekrar dene, yine olmaz.",p:29}]},
+video:{q:"arkadaşın gece 1'de sekiz komik video attı. sabah hepsini izledin.",k:"ne yaparsın?",o:[
+  {t:"hiçbirine tepki vermem.",P:2,h:"sekiz görüldü, sıfır ses.",r:"arkadaşın \"izledi mi acaba\" diye profiline baktı. iki kere. sen o sırada başkasının videosuna gülüyordun.",p:57},
+  {t:"sonuncuya \"aaa bunu görmüştüm\" yazarım.",P:4,h:"görmemiştin.",r:"arkadaşın da biliyor. video dün çekilmiş. kendi kendini yakan nadir insanlardansın.",p:43}]},
+corap:{q:"misafirliktesin, ayakkabıyı çıkaracaksın, çorabın delik.",k:"hangisi sensin?",o:[
+  {t:"başparmağı halının altına saklamak, üç saat",P:2,h:"tüm akşam heykel.",r:"başparmağını üç saat halıya gömdün. kimse görmedi; ayağın uyuştu, onur kurtuldu, sözde.",p:66},
+  {t:"çıkarmamak, \"ayağım üşüyor\" demek",P:4,h:"ev sahibi anladı.",r:"halıya ayakkabıyla çıktın. çorap kurtuldu, halı kurtulmadı, sen hiç kurtulmadın.",p:34}]},
+spoiler:{q:"arkadaşın \"finali söyleme\" dedi. sen finali biliyorsun.",k:"ne dersin?",o:[
+  {t:"söylemem ama o karaktere çok bağlanma.",P:4,h:"söyledin.",r:"teknik olarak sustun. arkadaşın altıncı bölümden sonra sana küstü. ağzını tutamayan insan kategorisi; hoş geldin.",p:52},
+  {t:"ağzımla söylemem, yüzümle söylerim.",P:3,h:"yüzün konuştu.",r:"kaşını kaldırdın. arkadaşın \"kim ölüyor\" dedi; sen \"kimse\" dedin, yüzün \"biri\" dedi.",p:48}]},
+kargo:{q:"kargon komşuya bırakılmış. komşu 22:10'da eve geldi, ışığı yandı.",k:"ne yaparsın?",o:[
+  {t:"hemen zile basarım, daha yeni geldi.",P:3,h:"bir ayağı içeride, bir ayağı dışarıda.",r:"komşu paketi uzattı, \"kolay gelsin\" demedi. demediğini yarın apartman grubunda okursun, isimsiz.",p:49},
+  {t:"kuryeye \"ben evdeydim\" diye şikâyet yazarım.",P:2,h:"şikâyet \"incelemeye alındı\".",r:"kurye bugün 40 paket taşıdı, seninki kırkıncı. paketi yine sabah alacaksın; şikâyet yarın öğlen okunacak.",p:51}]},
+espri:{q:"espri yaptın, kimse gülmedi.",k:"ne yaparsın?",o:[
+  {t:"espriyi açıklarım.",P:3,h:"anatomi dersi.",r:"açıklama espriden uzun sürdü. ortam buz oldu; kimse gülmedi, sen de gülmedin.",p:31},
+  {t:"\"siz anlamadınız\" derim.",P:4,h:"mahalle anladı.",r:"espri kötüydü, sen daha kötü oldun. kimse bir şey demedi; bu daha kötü.",p:69}]},
+tabak:{q:"komşunun börek tabağı iki haftadır sende. tabak boş.",k:"ne yaparsın?",o:[
+  {t:"kurabiye yapınca götürürüm.",P:3,h:"kurabiye günü takvimde yok.",r:"tabak sende oturma izni aldı. komşu ikinci böreği poşetle verdi. mesaj alındı mı? alınmadı; poşet yine geldi.",p:62},
+  {t:"içine market bisküvisi koyarım.",P:2,h:"paketi tanıdı.",r:"çaba görüldü, bisküvi de görüldü. ikisi de konuşulmadı. araf tam olarak burası.",p:38}]},
+fikir:{q:"dün cem'e anlattığın fikri, cem toplantıda kendi fikri diye sundu. müdür \"işte bu\" dedi.",k:"ne yaparsın?",o:[
+  {t:"susarım, akşam müdüre mesaj atarım.",P:4,h:"gece mesajı.",r:"müdür sabah cem'e sordu, cem \"beraber bulduk\" dedi. artık ikiniz de şüphelisiniz.",p:44},
+  {t:"toplantıda \"o benim fikrimdi\" diye bağırırım.",P:5,h:"sahne.",r:"fikir senindi, sahne de senin oldu. müdür notu düzeltti; cem unutmadı, sen \"o toplantıdaki\" oldun.",p:56}]},
+dugun:{q:"kuzenin şehir dışında evleniyor. bütçen ya yola ya takıya yetiyor.",k:"ne yaparsın?",o:[
+  {t:"giderim, boş zarf takarım. (sonra tamamlarım.)",P:5,h:"boş zarf.",r:"zarfı açan teyze. tamamlanmadı; teyze unutmadı. boş zarfın da bir ağırlığı var, teyze tarttı.",p:37},
+  {t:"gitmem, \"işim çıktı\" derim, story'ye kahve atarım.",P:4,h:"story.",r:"kuzen story'yi gördü. kahve güzel çıkmış. düğün fotoğraflarında sen yoksun, kahve var.",p:63}]},
+hediye:{q:"ofis grubuna \"hediye alıyoruz, istemeyen yazsın\" düştü. görmedin. sabah borcun geldi: 500 lira.",k:"ne yaparsın?",o:[
+  {t:"öderim, kartı imzalamam.",P:3,h:"parayı verdin, kalbi vermedin.",r:"hediye alan kişi kartta adını aradı. bulamadı. 500 lira verip düşman olmak; az bulunur beceri.",p:35},
+  {t:"ödemem, \"görmedim\" derim, makineden kahve içerim.",P:4,h:"ortak olmadan ortak.",r:"kahveyi içtin, ödeyenler saydı. ofiste adın artık \"görmemiş\".",p:65}]},
+makine:{q:"gece 23:00, elektrik ucuz. makineyi kurdun. alt komşu duvara vurdu.",k:"ne yaparsın?",o:[
+  {t:"devam, 00:10'da biter.",P:3,h:"üçüncü hafta.",r:"komşu sabah 6'da kalkıyor. yarın da vuracak; sen de yarın da ucuz yıkayacaksın. ayda 40 lira kâr, bir komşu zarar.",p:58},
+  {t:"ben de duvara vururum.",P:5,h:"duvar konuşuyor.",r:"komşu geri vurdu. artık ikiniz de mors biliyorsunuz. apartman toplantısında görüşürsünüz; gündem maddesi sensin.",p:42}]},
+ucak:{q:"uçakta üç saat, dar koltuk.",k:"hangisi sensin?",o:[
+  {t:"koltuğu sonuna kadar yatıran",P:3,h:"dizler göğüste.",r:"arkadaki yolcu üç saat kendi dizini öptü. sen uyudun, o seni unutmadı.",p:61},
+  {t:"öndeki yatınca koltuğu tekmeleyen",P:4,h:"tekme.",r:"koltuk yatık kaldı, sen bir de kaba oldun. iki saat sonra ikiniz de aynı pasaport sırasındasınız.",p:39}]},
+toplanti:{q:"online toplantı, dördüncü saat.",k:"sen hangisisin?",o:[
+  {t:"kamera kapalı, \"bağlantım kötü\" diyen",P:3,h:"bağlantın iyi, kahvaltın güzel.",r:"herkes biliyor. müdür de biliyor; o da kahvaltıda.",p:72},
+  {t:"\"bir şey ekleyeceğim\" deyip aynısını söyleyen",P:4,h:"katkın: eko.",r:"toplantı on dakika uzadı. on dakika çarpı on iki kişi: iki saat insan ömrü, senin yüzünden.",p:28}]},
+iptal:{q:"akşam buluşmaya gitmeyeceğini öğlen anladın. arkadaşın \"masadayım\" yazdı.",k:"ne yazarsın?",o:[
+  {t:"\"çok özür, gelemeyeceğim.\" (öğlenden beri biliyordun.)",P:4,h:"dört saat biliyordun.",r:"arkadaşın iki kişilik masada tek oturdu. garson ikinci menüyü aldı. özür iyi, zamanlama rezalet.",p:55},
+  {t:"\"yoldayım.\" (değilsin.)",P:6,h:"yine mi.",r:"arkadaşın bir saat bekledi. artık iki yalan var ve ikisini de biliyor.",p:45}]},
+dedikodu:{q:"dedikodu mesajını yanlış kişiye attın: hakkında konuştuğun kişiye.",k:"ne yazarsın?",o:[
+  {t:"\"pardon, başka birine gidecekti.\"",P:3,h:"itiraf, yanlış kapıdan.",r:"mesajı geri alamadın, bir de \"başkasına gidecekti\" dedin. şimdi iki kişi kırgın: o ve o.",p:48},
+  {t:"\"şaka şaka, seninle dalga geçiyorduk.\"",P:5,h:"ikinci yalan.",r:"ilk mesaj kazaydı, ikincisi karar. yarın asansörde görüşürsünüz; asansör dokuz kat.",p:52}]},
+afis:{q:"aile grubuna \"bizimki tasarımcı, afişi akşama yapar\" yazıldı. sana soran olmadı.",k:"ne yaparsın?",o:[
+  {t:"sessizce yaparım.",P:3,h:"artık görev.",r:"afiş güzel oldu. bayram afişi de sende, düğün afişi de, mevlit de. kapıya tabela as: ücretsiz tasarım, 7/24.",p:64},
+  {t:"grupta \"bana soran oldu mu\" yazarım.",P:2,h:"doğru soru, yanlış salon.",r:"teyzeler okudu, \"aa kırıldı\" dendi. afiş yine sende. bir de kırgın oldun; iki iş birden.",p:36}]}
 };
-// 7 gün × 3: her gün en az bir itiraf sorusu + diğer biçimler; herkese aynı gün aynı üçlü
-const DAYS=[["yoldayim","sinif","hesap"],["sarma","i_tuvalet","o_grup"],["video","o_yoldayim","i_corap"],["kargo","i_espri","spoiler"],["tabak","o_termos","fikir"],["sira","i_ucak","o_kofte"],["iptal","i_dedikodu","afis"]];
-// havuzda bekleyen sorular (2. hafta): borek, grup, ses, dugun, hediye, makine, kahve, toplanti, termos
-const CAP=8;
+const DAYS=[["yoldayim","sinif","hesap"],["sarma","tuvalet","grup"],["video","corap","spoiler"],["kargo","espri","tabak"],["fikir","dugun","hediye"],["makine","ucak","toplanti"],["iptal","dedikodu","afis"]];
 
-// yargı havuzu: mahalleden anonim savunmalar (yes: mahallenin haklı bulma oranı; TEMSİLİ). günde 3, güne göre döner.
+// mahalle kahvesi havuzu (tohum; gerçek uygulamada oyuncuların bahaneleri). yes: haklı oranı, TEMSİLİ
 const JURY=[
   {who:"yoldayım · \"yoldayım, 5 dk\" yazdı",say:"yoldayım dedim; duşa doğru yoldaydım.",yes:62},
   {who:"aile grubu · sessize aldı",say:"847 mesaj okudum, 846'sı günaydın çiçeğiydi.",yes:88},
@@ -440,55 +317,63 @@ const JURY=[
   {who:"düğün · boş zarf taktı",say:"takı borç değil, jest. jestim geç kaldı.",yes:12},
   {who:"kasa · arkadaşını da araya aldı",say:"arkadaşım da tek şey alacaktı; poğaçalar sonradan oldu.",yes:22},
   {who:"toplantı · fikri müdüre gece yazdı",say:"müdürün hakkı doğruyu bilmek; saatin önemi yok.",yes:44},
-  {who:"afiş · sessizce yaptı",say:"yapmasam teyzem yapardı, daha kötü olurdu.",yes:61}
+  {who:"afiş · sessizce yaptı",say:"yapmasam teyzem yapardı, daha kötü olurdu.",yes:61},
+  {who:"hesap · tuvalete gitti",say:"gerçekten sıkışmıştım. hesabın gelmesi tesadüf.",yes:19},
+  {who:"çorap · halıya gömdü",say:"çorap delik değildi, havalandırma deliği.",yes:73},
+  {who:"espri · açıkladı",say:"espri iyiydi, ortam kötüydü.",yes:38}
 ];
 
-// rozetler: sözlük başlığı biçiminde, küçük harf
+// mevki (URUN-v2.md §4)
+function mevki(k){ return k>=85?["cennet köşkleri","göz boyayan riyakâr"]:k>=60?["üst kat","yalandan beyefendi / hanımefendi"]:k>=40?["araf meydanı","araf müdavimi (yancı)"]:k>=20?["bodrum kat","potansiyel baş belası"]:["cehennemin dibi","yatacak yeri olmayan"]; }
+
 const ROZET=[
   {id:"yoldayim",n:"yoldayım diyen ama yolda olmayan insan",pick:[["yoldayim",0],["iptal",1]]},
   {id:"sarma",n:"sarmaya gitmeyen evlat",pick:[["sarma",0]]},
-  {id:"muhasebe",n:"masada hesap makinesi açan insan",pick:[["hesap",1]]},
-  {id:"beyin",n:"sınıfın yedek beyni",pick:[["sinif",2]]},
-  {id:"gozde",n:"günaydın çiçeğine kalp atan yeğen",pick:[["grup",1]]},
-  {id:"kacak",n:"aile grubundan çıkan cesur yürek",pick:[["grup",2]]},
-  {id:"diplomat",n:"son böreği bölen diplomat",pick:[["borek",1]]},
-  {id:"mors",n:"duvara vurarak iletişim kuran komşu",pick:[["makine",2]]},
+  {id:"tuvalet",n:"hesap gelince tuvalete giden arkadaş",pick:[["tuvalet",0]]},
+  {id:"kacak",n:"aile grubundan çıkan cesur yürek",pick:[["grup",1]]},
+  {id:"heykel",n:"çorabını halıya gömen heykel",pick:[["corap",0]]},
+  {id:"mors",n:"duvara vurarak iletişim kuran komşu",pick:[["makine",1]]},
   {id:"eko",n:"toplantıda aynı şeyi tekrar söyleyen insan",pick:[["toplanti",1]]},
-  {id:"juri",n:"ilk yargısını dağıtan mahalleli",ev:"jury3"},
+  {id:"story",n:"düğün yerine story atan kuzen",pick:[["dugun",1]]},
+  {id:"kivirma",n:"efsanevi kıvıran",ev:"legend"},
+  {id:"linc",n:"mahalleden linç yiyen",ev:"linc"},
+  {id:"kahve",n:"kahvede ilk gıybet",ev:"jury3"},
   {id:"seri3",n:"üç gün üst üste gelen insan",ev:"streak3"},
-  {id:"cennet",n:"cennetlik",ev:"cennet"},
-  {id:"cehennem",n:"cehennemlik",ev:"cehennem"}
+  {id:"dip",n:"cehennemin dibini gören",ev:"dip"}
 ];
 
 // ---------- durum ----------
 const $=id=>document.getElementById(id);
-const KEY="acibiber-v8"; const VER=4;
+const KEY="acibiber-v9"; const VER=5;
 function istNow(){ try{ return new Date(new Date().toLocaleString("en-US",{timeZone:"Europe/Istanbul"})); }catch(e){ return new Date(); } }
 function dayKey(off){ const d=istNow(); d.setHours(d.getHours()-9); d.setDate(d.getDate()+(off||0)); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
 let S={v:VER,karma:50,firstDay:dayKey(0),log:{},badges:[],streak:0,lastDay:null,jyes:0,jn:0};
-try{ const s=JSON.parse(localStorage.getItem(KEY)||"null"); if(s&&s.v===VER) S=s; else if(s&&s.v){ S={...S,karma:s.karma,firstDay:s.firstDay,started:s.started}; } }catch(e){}
+// log[day] = {items:[{id,opt,P,text}], net, votes:[{i,yes}], kahveDone, settled, night:{lines,hit,total}}
+try{ const s=JSON.parse(localStorage.getItem(KEY)||"null"); if(s&&s.v===VER) S=s; }catch(e){}
 function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
 const today=dayKey(0);
 function dayIndexOf(key){ const a=new Date(S.firstDay), b=new Date(key); return Math.round((b-a)/86400000); }
 let dayIdx=Math.max(0,Math.min(DAYS.length-1,dayIndexOf(today)));
-let testDay=null;
+let testDay=null, clockOverride=false;
 const curKey=()=>testDay===null?today:("test-"+testDay);
 const curIdx=()=>testDay===null?dayIdx:testDay;
+function kahveOpen(){ if(clockOverride) return true; const h=istNow().getHours(); return h>=21 || h<9; }
+function clampK(v){ return Math.max(0,Math.min(100,v)); }
 
-// ---------- çubuk ----------
+// ---------- çubuk + mevki ----------
 function renderBar(v){
   const z=v>=67?2:v>=34?1:0;
   ["z1","z2","z3"].forEach((id,i)=>$(id).classList.toggle("on",i===z));
   $("badge").textContent=v; $("badge").style.left=`calc(${Math.max(5,Math.min(95,v))}%)`;
+  const m=mevki(v); $("mevki").innerHTML=`<b>${m[0]}</b> · ${m[1]}`;
 }
 renderBar(S.karma);
-function zoneName(v){ return v>=67?"cennet":v>=34?"araf":"cehennem"; }
 
 // ---------- yüz ----------
-function face(mood){
+function face(mood,el){
   const mouth = mood==="minus" ? `<path d="M36 68 q14 -10 28 0" stroke="#7A2A12" stroke-width="4" fill="none" stroke-linecap="round"/>` : mood==="flat" ? `<path d="M38 66 h24" stroke="#7A2A12" stroke-width="4" stroke-linecap="round"/>` : `<path d="M36 62 q14 14 28 0" stroke="#7A2A12" stroke-width="4" fill="none" stroke-linecap="round"/>`;
-  const brow = mood==="minus" ? `<path d="M30 40 l14 6 M70 40 l-14 6" stroke="#7A2A12" stroke-width="4" stroke-linecap="round"/>` : mood==="flat" ? `<path d="M30 42 l14 2 M70 42 l-14 2" stroke="#7A2A12" stroke-width="4" stroke-linecap="round"/>` : "";
-  $("face").innerHTML=`<circle cx="50" cy="52" r="40" fill="#FF5A36"/><rect x="44" y="4" width="12" height="18" rx="6" fill="#3FA85B" transform="rotate(-15 50 12)"/><circle cx="38" cy="50" r="7" fill="#fff"/><circle cx="62" cy="50" r="7" fill="#fff"/><circle cx="39.5" cy="51" r="3.4" fill="#2B2522"/><circle cx="63.5" cy="51" r="3.4" fill="#2B2522"/>${brow}${mouth}`;
+  const brow = mood==="minus" ? `<path d="M30 40 l14 6 M70 40 l-14 6" stroke="#7A2A12" stroke-width="4" stroke-linecap="round"/>` : "";
+  $(el||"face").innerHTML=`<circle cx="50" cy="52" r="40" fill="#FF5A36"/><rect x="44" y="4" width="12" height="18" rx="6" fill="#3FA85B" transform="rotate(-15 50 12)"/><circle cx="38" cy="50" r="7" fill="#fff"/><circle cx="62" cy="50" r="7" fill="#fff"/><circle cx="39.5" cy="51" r="3.4" fill="#2B2522"/><circle cx="63.5" cy="51" r="3.4" fill="#2B2522"/>${brow}${mouth}`;
 }
 
 // ---------- rozet ----------
@@ -496,20 +381,23 @@ let newBadges=[];
 function award(id){ if(S.badges.includes(id)) return; S.badges.push(id); newBadges.push(id); save(); }
 function badgeName(id){ const r=ROZET.find(x=>x.id===id); return r?r.n:id; }
 function checkPickBadges(cid,opt){ ROZET.forEach(r=>{ if(r.pick&&r.pick.some(([c,o])=>c===cid&&o===opt)) award(r.id); }); }
-function checkKarmaBadges(){ if(S.karma>=67) award("cennet"); if(S.karma<=33) award("cehennem"); }
 
 // ---------- akış ----------
-const screens=["s-start","s-q","s-r","s-def","s-end","s-j","s-ben"];
+const screens=["s-start","s-q","s-r","s-def","s-end","s-j","s-night","s-ben"];
 function show(id){ screens.forEach(s=>$(s).hidden=s!==id); $(id).scrollTop=0; const t={ "s-j":"jury","s-ben":"ben" }[id]||"today"; document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.tab===t)); }
 let queue=[], qi=0, pending=null;
-function dayLog(){ const k=curKey(); if(!S.log[k]) S.log[k]={items:[],net:0}; return S.log[k]; }
-function dayDone(){ return dayLog().items.length>=(DAYS[curIdx()]||[]).length; }
+function dayLog(){ const k=curKey(); if(!S.log[k]) S.log[k]={items:[],net:0,votes:[]}; return S.log[k]; }
+function dayDone(){ return dayLog().items.length>=(DAYS[curIdx()]||[]).length && dayLog().items.every(x=>x.text); }
 function startDay(){
   const list=DAYS[curIdx()]||[];
-  const done=dayLog().items.map(x=>x.id);
-  queue=list.filter(id=>!done.includes(id)); qi=0;
-  $("dayLbl").textContent=`${curIdx()+1}. gün`;
+  const L=dayLog();
+  $("dayLbl").textContent=`${curIdx()+1}. gün`+(testMode?" · panel: başlığa dokun":"");
   $("tabs").hidden=false;
+  // yarım kalan kıvırma varsa oraya dön
+  const half=L.items.find(x=>!x.text);
+  if(half){ pending={id:half.id,c:C[half.id],opt:half.opt}; renderDef(); return; }
+  const done=L.items.map(x=>x.id);
+  queue=list.filter(id=>!done.includes(id)); qi=0;
   if(!queue.length){ showEnd(); return; }
   next();
 }
@@ -519,136 +407,154 @@ function renderQ(id){
   $("qIdx").textContent=`${qi+1}/${queue.length}`;
   $("qText").textContent=c.q; $("qKind").textContent=c.k;
   const prevKey = testDay===null ? dayKey(-1) : ("test-"+(testDay-1));
-  const prev=S.log[prevKey] || (testDay===1 ? S.log[today] : null); const y=$("yest");
-  if(qi===0 && prev && prev.items.length){ const n=prev.net; y.innerHTML=`dün: <b>${n>0?"+":""}${n}</b>. ${n>0?"mahalle seni sevdi, şımarma.":n<0?"mahalle gördü, not aldı.":"mahalle okudu, geçti."}`; y.hidden=false; } else y.hidden=true;
+  const prev=S.log[prevKey]; const y=$("yest");
+  if(qi===0 && prev && prev.night){ y.innerHTML=`dün gece: <b>${prev.night.total>0?"+":""}${prev.night.total}</b>. ${prev.night.total>0?"mahalle seni affetti, şımarma.":prev.night.total<0?"mahalle affetmedi; mahalle unutmaz.":"mahalle okudu, geçti."}`; y.hidden=false; } else y.hidden=true;
   const b=$("qBody"); b.innerHTML=""; $("qCta").hidden=true; pending.pick=null;
-  const f=c.f||"soru";
-  if(f==="foto"){
+  if(c.f==="foto"){
     const ph=document.createElement("div"); ph.className="photo"; ph.innerHTML=`<img src="${c.img}" alt="">`;
     c.o.forEach((o,i)=>{ const h=document.createElement("button"); h.className="hot"; h.style.left=o.x+"%"; h.style.top=o.y+"%"; h.innerHTML=`<i></i><span>${o.t}</span>`; h.setAttribute("aria-label",o.t);
       h.addEventListener("click",()=>{ ph.querySelectorAll(".hot").forEach(x=>x.classList.toggle("sel",x===h)); pending.pick=i; $("qGo").textContent="bu benim: "+o.t; $("qCta").hidden=false; }); ph.appendChild(h); });
     b.appendChild(ph);
     const n=document.createElement("p"); n.className="note"; n.textContent="fotoğrafta birine dokun. yalan söyleme, hoca görüyor."; b.appendChild(n);
-  } else if(f==="olcek"){
-    b.innerHTML=`<div class="slnum" id="slv">5</div><div class="slends"><span>0</span><span>10</span></div><input type="range" id="sl" min="0" max="10" value="5" aria-label="${c.k}"><div class="slends"><span>${c.lo}</span><span>${c.hi}</span></div><p class="note" style="margin-top:8px">kaydır, bas, uzatma.</p>`;
-    $("sl").addEventListener("input",()=>$("slv").textContent=$("sl").value);
-    $("qGo").textContent="kararımı ver"; $("qCta").hidden=false; pending.pick="scale";
-  } else if(f==="ikili"){
-    const two=document.createElement("div"); two.className="two";
-    c.o.forEach((o,i)=>{ if(i===1){ const y=document.createElement("div"); y.className="yada"; y.textContent="ya da"; two.appendChild(y); } const btn=document.createElement("button"); btn.className="big"; btn.textContent=o.t; btn.addEventListener("click",()=>answer(i)); two.appendChild(btn); });
-    b.appendChild(two);
-    const n=document.createElement("p"); n.className="note"; n.textContent="ikisi de kötü. birine bas, mahalle ne dedi gör."; b.appendChild(n);
   } else {
-    const rows=document.createElement("div"); rows.className="rows";
-    c.o.forEach((o,i)=>{ const btn=document.createElement("button"); btn.className="row"; btn.textContent=o.t; btn.addEventListener("click",()=>answer(i)); rows.appendChild(btn); });
-    b.appendChild(rows);
+    const two=document.createElement("div"); two.className="two";
+    c.o.forEach((o,i)=>{ if(i===1){ const y2=document.createElement("div"); y2.className="yada"; y2.textContent="ya da"; two.appendChild(y2); } const btn=document.createElement("button"); btn.className="big"; btn.textContent=o.t; btn.addEventListener("click",()=>answer(i)); two.appendChild(btn); });
+    b.appendChild(two);
   }
   show("s-q");
 }
-$("qGo").addEventListener("click",()=>{ if(!pending) return; if(pending.pick==="scale"){ const v=+$("sl").value; answer(v<=3?0:v<=7?1:2, v); } else if(typeof pending.pick==="number") answer(pending.pick); });
+$("qGo").addEventListener("click",()=>{ if(pending&&typeof pending.pick==="number") answer(pending.pick); });
 let lock=false;
 function touchStreak(){
   if(testDay!==null || S.lastDay===today) return;
   S.streak = (S.lastDay===dayKey(-1)) ? S.streak+1 : 1; S.lastDay=today; save();
   if(S.streak>=3) award("seri3");
 }
-function answer(i,scaleVal){
+function answer(i){
   if(lock) return; lock=true; setTimeout(()=>lock=false,400);
   const c=pending.c, o=c.o[i], L=dayLog();
-  const pickTxt = (c.f==="olcek") ? `${scaleVal} / 10` : o.t;
-  let d=o.d||0, capped=false;
-  const room=Math.max(-CAP-L.net,Math.min(CAP-L.net,d)); if(room!==d) capped=true; d=room;
-  const from=S.karma, to=Math.max(0,Math.min(100,from+d));
-  L.items.push({id:pending.id,opt:i,d,scale:scaleVal}); L.net+=d; S.karma=to; save();
-  touchStreak(); newBadges=[]; checkPickBadges(pending.id,i); checkKarmaBadges();
-  face(o.d>0?"plus":o.d<0?"minus":"flat");
-  $("rPick").innerHTML=`senin seçimin: <b>${pickTxt}</b>`;
+  const d=-o.P, from=S.karma, to=clampK(from+d);
+  L.items.push({id:pending.id,opt:i,P:o.P,text:null}); L.net+=d; S.karma=to; save();
+  touchStreak(); newBadges=[]; checkPickBadges(pending.id,i); if(to<=19) award("dip");
+  face("minus");
+  $("rPick").innerHTML=`vukuat: <b>${o.t}</b>`;
   $("rTitle").textContent=o.h; $("rText").textContent=o.r;
-  $("rMah").innerHTML=`mahalle: %${o.p} seninle aynı. <small>rakam şimdilik temsili; gerçek oy gelince ağlarsın.</small>`;
-  $("rFrom").textContent=from; $("rTo").textContent=to; const dd=$("rD"); dd.textContent=(d>0?"+":"")+d; dd.className="d "+(d>0?"p":d<0?"m":"");
-  $("rWhy").hidden=!capped; $("rWhy").textContent=capped?"günlük sınır doldu. çubuk bugün daha oynamaz, sen de oynama.":"";
+  $("rMah").innerHTML=`mahallenin %${o.p}'i de bunu seçti. <small>rakam temsili; gerçek oy gelince ağlarsın.</small>`;
+  $("rFrom").textContent=from; $("rTo").textContent=to; $("rD").textContent=d;
   $("rBadge").hidden=!newBadges.length; $("rBadge").textContent= newBadges.length ? "yeni rozet: "+newBadges.map(badgeName).join(" · ") : "";
   setTimeout(()=>renderBar(to),250);
-  $("shareNote").hidden=true; $("share").hidden=false;
-  pending.opt=i; pending.bad=o.d<0;
+  pending.opt=i;
   show("s-r");
 }
-$("rGo").addEventListener("click",()=>{ const L=dayLog(); if(pending&&pending.bad&&!L.def&&pending.c.b){ renderDef(); return; } qi++; next(); });
+$("rGo").addEventListener("click",()=>renderDef());
 function renderDef(){
-  const c=pending.c; $("dPick").innerHTML=`suç: <b>${c.f==="olcek"?"ölçekte "+c.o[pending.opt].t:c.o[pending.opt].t}</b>`;
-  $("dFace").innerHTML=$("face").innerHTML;
-  const rows=$("dRows"); rows.innerHTML="";
-  let dl=false;
-  c.b.forEach((b,i)=>{ const btn=document.createElement("button"); btn.className="row"; btn.textContent="“"+b.t+"”"; btn.addEventListener("click",()=>{ if(dl) return; dl=true; const L=dayLog(); L.def={id:pending.id,b:i}; save(); setTimeout(()=>{ qi++; next(); },200); }); rows.appendChild(btn); });
-  show("s-def");
+  const c=pending.c, o=c.o[pending.opt];
+  $("dPick").innerHTML=`suç: <b>${o.t}</b> · ceza <b>−${o.P}</b>`;
+  face("minus","dFace");
+  $("dText").value=""; $("dCnt").textContent="0 / 160"; $("dGo").disabled=true;
+  show("s-def"); setTimeout(()=>$("dText").focus(),50);
 }
-$("share").addEventListener("click",()=>{ $("shareNote").hidden=false; $("share").hidden=true; });
+$("dText").addEventListener("input",()=>{ const n=$("dText").value.length; $("dCnt").textContent=`${n} / 160`; $("dGo").disabled=$("dText").value.trim().length<3; });
+let dl=false;
+$("dGo").addEventListener("click",()=>{
+  if(dl) return; dl=true; setTimeout(()=>dl=false,500);
+  const t=$("dText").value.trim(); if(t.length<3) return;
+  const L=dayLog(); const it=L.items.find(x=>x.id===pending.id); it.text=t; save();
+  qi++; next();
+});
+
 function showEnd(){
-  const L=dayLog(); const first=S.karma-L.net;
+  const L=dayLog(); const first=S.karma-L.net-(L.night?L.night.total:0);
   $("endSum").textContent=`${first} → ${S.karma}`;
-  $("endAgree").textContent= L.net>0 ? "mahalle seni sevdi. şımarma." : L.net<0 ? "mahalle seni gördü. mahalle unutmaz." : "mahalle sessiz. okudu, geçti.";
-  $("endCap").hidden=!(Math.abs(L.net)>=CAP); $("endCap").textContent=`günlük sınır ±${CAP}. fazlasını biber de kaldırmaz.`;
-  const total=(DAYS[curIdx()]||[]).length;
-  $("endDots").innerHTML=Array.from({length:total},(_,i)=>`<i class="${i<L.items.length?'on':''}"></i>`).join("");
-  const isWeek=curIdx()===DAYS.length-1;
-  if(isWeek){ const keys=Object.keys(S.log); let net=0,worst=null; keys.forEach(k=>{ net+=S.log[k].net; S.log[k].items.forEach(x=>{ if(!worst||x.d<worst.d) worst=x; }); }); $("weekSum").textContent=`${S.karma-net} → ${S.karma} · ${zoneName(S.karma)}`; $("weekAgree").textContent= worst&&worst.d<0&&C[worst.id] ? `haftanın en kötü anı: "${C[worst.id].o[worst.opt].t}"` : "haftayı lekesiz bitirdin. şüpheli."; $("weekBox").hidden=false; $("endTitle").textContent="bir hafta oldu."; }
-  else { $("weekBox").hidden=true; $("endTitle").textContent="bugünlük bu kadar."; }
+  $("endLine").textContent=`üç vukuat, ${-L.net} puan ceza. ${L.items.length} bahane mahalleye gitti.`;
+  $("endExcuses").innerHTML=L.items.map(x=>`<div class="row"><span>“${x.text||""}”</span><b>−${x.P}</b></div>`).join("");
   const nw=istNow(), t=new Date(nw); t.setHours(9,0,0,0); if(t<=nw) t.setDate(t.getDate()+1); const m=Math.max(1,Math.round((t-nw)/60000));
-  $("endNext").textContent= (curIdx()+1<DAYS.length) ? `yarın 09:00'da 3 yeni durum (${Math.floor(m/60)} sa ${m%60} dk). biçim değişir, yargı değişmez.` : "pilot içerikleri bitti. gerisini yazıyoruz, sen de bir şey yazma.";
-  const jd=L.jury&&L.jury.done; $("toJury").hidden=!!jd; $("juryHint").hidden=!!jd; $("juryDoneNote").hidden=!jd;
-  if(jd){ const hit=L.jury.votes.filter(v=>{ const j=JURY[v.i]; return v.yes ? j.yes>=50 : j.yes<50; }).length; $("endJury").textContent=`yargı: mahalleyle ${hit}/3 aynı · elinin ayarı: ${juryChar()}.`; $("endJury").hidden=false; } else $("endJury").hidden=true;
+  $("endNext").textContent= (curIdx()+1<DAYS.length) ? `yeni vukuat yarın 09:00 (${Math.floor(m/60)} sa ${m%60} dk).` : "pilot içerikleri bitti. gerisini yazıyoruz.";
+  if(L.settled){ $("toKahve").hidden=true; $("kahveNote").textContent="gece yarısı hesabı kesildi. yarın yeni vukuat."; }
+  else if(L.kahveDone){ $("toKahve").hidden=true; $("kahveNote").textContent="kahve dağıldı. gece yarısı hesap kesilir; sabah gelince görürsün."; }
+  else if(kahveOpen()){ $("toKahve").hidden=false; $("kahveNote").textContent="mahalle kahvesi açık. üç bahane oku, haklı mı haksız mı sen söyle."; }
+  else { $("toKahve").hidden=true; const k=new Date(nw); k.setHours(21,0,0,0); if(k<=nw) k.setDate(k.getDate()+1); const mm=Math.max(1,Math.round((k-nw)/60000)); $("kahveNote").textContent=`mahalle kahvesi 21:00'de açılır (${Math.floor(mm/60)} sa ${mm%60} dk). o zamana kadar bahanen havuzda bekler.`; }
+  $("endTitle").textContent = L.settled ? "bugün kapandı." : "bugünün vukuatı bitti.";
   show("s-end");
 }
-$("toJury").addEventListener("click",showJury);
+$("toKahve").addEventListener("click",showJury);
 
-// ---------- yargı ----------
+// ---------- mahalle kahvesi ----------
 let jk=0;
 function deck(k){ return JURY[(curIdx()*3+k)%JURY.length]; }
 function showJury(){
   ["jLock","jRun","jDone"].forEach(id=>$(id).hidden=true);
-  if(!dayDone()){ $("jLock").hidden=false; show("s-j"); return; }
-  const L=dayLog(); if(!L.jury) L.jury={votes:[],done:false};
-  if(L.jury.done){ juryDone(); return; }
-  jk=L.jury.votes.length; renderJ(); show("s-j");
+  const L=dayLog();
+  if(!dayDone()){ $("jLockTitle").textContent="önce kendi vukuatın."; $("jLockText").textContent="üç vukuatı bitir, bahanelerini ver; kahve sonra."; $("jLock").hidden=false; show("s-j"); return; }
+  if(!kahveOpen() && !L.kahveDone){ $("jLockTitle").textContent="kahve kapalı."; $("jLockText").textContent="mahalle kahvesi 21:00'de açılır. bahanen havuzda, mahalle uyanınca okunur."; $("jLock").hidden=false; show("s-j"); return; }
+  if(L.kahveDone){ juryDone(); return; }
+  jk=L.votes.length; renderJ(); show("s-j");
 }
 function renderJ(){
-  const j=deck(jk); $("jCount").textContent=`${jk+1}/3 · bas birine, uzatma`; $("jWho").textContent=j.who; $("jSay").textContent=j.say;
-  $("jRev").hidden=true; $("jVote").hidden=false; $("jNext").hidden=true; $("jRun").hidden=false;
+  const j=deck(jk); $("jCount").textContent=`${(jk%3)+1}/3 · bas birine, uzatma`; $("jWho").textContent=j.who; $("jSay").textContent="“"+j.say+"”";
+  $("jRev").hidden=true; $("jVote").hidden=false; $("jNext").hidden=true; $("jRun").hidden=false; $("jDone").hidden=true; $("jLock").hidden=true;
 }
 let jl=false;
 function vote(yes){
   if(jl) return; jl=true; setTimeout(()=>jl=false,400);
-  const j=deck(jk), L=dayLog(); L.jury.votes.push({i:(curIdx()*3+jk)%JURY.length,yes}); S.jn++; if(yes) S.jyes++; save();
+  const j=deck(jk), L=dayLog(); L.votes.push({i:(curIdx()*3+jk)%JURY.length,yes}); S.jn++; if(yes) S.jyes++; save();
   const agree = yes ? j.yes>=50 : j.yes<50;
-  $("jRev").innerHTML=`sen: <b>${yes?"haklı":"haksız"}</b>. mahalle: <b>%${j.yes}</b> haklı dedi. ${agree?"aynı fikirdesiniz; sürü psikolojisi, ama olsun.":"mahalle başka düşündü. yalnızsın, geçmiş olsun."} <small>(temsili)</small>`;
+  $("jRev").innerHTML=`sen: <b>${yes?"kul kuldan razı":"yatacak yeri yok"}</b>. mahalle: <b>%${j.yes}</b> haklı dedi. ${agree?"mahalleyle aynısın; gece yarısı +1.":"mahalle başka düşündü. yalnızsın, geçmiş olsun."} <small>(temsili)</small>`;
   $("jRev").hidden=false; $("jVote").hidden=true; $("jNext").hidden=false;
 }
 $("jYes").addEventListener("click",()=>vote(true)); $("jNo").addEventListener("click",()=>vote(false));
-$("jNext").addEventListener("click",()=>{ jk++; if(jk>=3){ const L=dayLog(); L.jury.done=true; save(); award("juri"); juryDone(); } else renderJ(); });
+$("jNext").addEventListener("click",()=>{ jk++; const L=dayLog(); if(jk%3===0){ L.kahveDone=true; save(); award("kahve"); juryDone(); } else renderJ(); });
 function juryChar(){ if(S.jn<3) return "—"; const r=S.jyes/S.jn; return r>=.6?"hafif":r<=.4?"ağır":"yerinde"; }
 function juryDone(){
-  const L=dayLog(); const hit=L.jury.votes.filter(v=>{ const j=JURY[v.i]; return v.yes ? j.yes>=50 : j.yes<50; }).length;
-  $("jHit").textContent=`${hit}/3`; $("jChar").textContent=juryChar();
-  if(L.def){ const c=C[L.def.id], b=c.b[L.def.b]; let extra="";
-    if(!L.jury.pardon){ L.jury.pardon=true; if(b.p>=50){ S.karma=Math.min(100,S.karma+1); L.jury.pardonD=1; } else L.jury.pardonD=0; save(); renderBar(S.karma); checkKarmaBadges(); }
-    extra = L.jury.pardonD ? ` biber seni affetti: <b style="color:var(--plus)">+1</b>. şımarma.` : ` biber affetmedi. mahalle de affetmedi. sen de kendini affetme.`;
-    $("jOwnText").innerHTML=`"${b.t}" · mahalle <b>%${b.p}</b> haklı buldu.${extra} <small class="muted">(temsili)</small>`; $("jOwn").hidden=false; }
-  else $("jOwn").hidden=true;
+  const L=dayLog(); const hit=L.votes.filter(v=>{ const j=JURY[v.i]; return v.yes ? j.yes>=50 : j.yes<50; }).length;
+  $("jN").textContent=L.votes.length; $("jHit").textContent=`${hit}/${L.votes.length}`; $("jChar").textContent=juryChar();
+  $("jDoneText").textContent = L.settled ? "hesap kesildi; gerisi yarın." : `uyum ${hit} puan getirecek; gece yarısı hesaba yazılır. bahanelerin de mahallede; sonucu sabah görürsün.`;
+  $("jMore").hidden = L.settled || L.votes.length>=12;
   $("jRun").hidden=true; $("jLock").hidden=true; $("jDone").hidden=false; show("s-j");
 }
+$("jMore").addEventListener("click",()=>{ jk=dayLog().votes.length; renderJ(); });
 $("jBack").addEventListener("click",()=>{ if(dayDone()) showEnd(); else startDay(); });
+
+// ---------- gece yarısı hesaplaşması (prototipte temsili; gerçekte sunucu) ----------
+function hashPct(t){ let h=0; for(const ch of t) h=(h*31+ch.charCodeAt(0))&0xffff; return 20+(h%75); } // 20..94
+function settle(key){
+  const L=S.log[key]; if(!L||L.settled||!L.items.length||!L.items.every(x=>x.text)) return null;
+  const lines=[]; let total=0;
+  L.items.forEach(x=>{ const pct=hashPct(x.text); let ref, lbl;
+    if(pct>80){ ref=2*x.P; lbl="efsanevi kıvırma"; award("kivirma"); } else if(pct>=65){ ref=x.P; lbl="yırttın"; } else if(pct>=35){ ref=0; lbl="mahalle ikiye bölündü"; } else { ref=-5; lbl="ağır linç"; award("linc"); }
+    total+=ref; lines.push({text:x.text,pct,ref,lbl}); });
+  const hit=L.votes.filter(v=>{ const j=JURY[v.i]; return v.yes ? j.yes>=50 : j.yes<50; }).length;
+  total+=hit;
+  S.karma=clampK(S.karma+total); if(S.karma<=19) award("dip");
+  L.settled=true; L.night={lines,hit,total}; save(); renderBar(S.karma);
+  return L.night;
+}
+function showNight(n){
+  $("nightBox").innerHTML = n.lines.map(l=>`<div class="row"><span>“${l.text}”<br><span class="muted" style="font-size:12px">%${l.pct} haklı · ${l.lbl}</span></span><b style="color:${l.ref>0?'var(--plus)':l.ref<0?'var(--minus)':'inherit'}">${l.ref>0?"+":""}${l.ref}</b></div>`).join("")
+    + `<div class="row"><span>mahalle uyumu (${n.hit} oyda çoğunlukla aynı)</span><b>+${n.hit}</b></div>`
+    + `<div class="row"><span><b>gece toplamı</b></span><b>${n.total>0?"+":""}${n.total}</b></div>`;
+  const m=mevki(S.karma); $("nightSum").textContent=`${S.karma} / 100`; $("nightMevki").textContent=`${m[0]} · ${m[1]}`;
+  $("tabs").hidden=false; show("s-night");
+}
+$("nightGo").addEventListener("click",()=>{ if(dayDone()) showEnd(); else startDay(); });
+// açılışta: dünün hesabı kesilmemişse kes ve göster
+let pendingNight=null;
+(function(){ const pk=dayKey(-1); if(S.log[pk]&&!S.log[pk].settled){ pendingNight=settle(pk); } })();
 
 // ---------- ben ----------
 function unvan(days){ return days>=7 ? ["muhtar","mahalle seni seçmedi, sen kaldın. mühür sende, kimse sormuyor."] : days>=3 ? ["mahalleli","bakkal artık seni tanıyor. 7. gün muhtar olursun, acele etme."] : ["yeni taşınan","daha perdeni asmadın. 3. günde mahalleli olursun, o da bir şey değil."]; }
 function showBen(){
   const days=Object.keys(S.log).filter(k=>!k.startsWith("test-")&&S.log[k].items.length).length||1;
   $("bKarma").textContent=S.karma; $("bStreak").textContent=S.streak||0; $("bDays").textContent=days;
-  const u=unvan(days); $("bTitle").textContent="unvan: "+u[0]; $("bTitleSub").textContent=u[1];
+  const m=mevki(S.karma); $("bMevki").textContent=m[0]; $("bMevkiSub").textContent=m[1]+" · "+S.karma+" / 100";
+  const u=unvan(days); $("bTitle").textContent="kıdem: "+u[0]; $("bTitleSub").textContent=u[1];
   const ch=juryChar(); $("bJury").textContent= S.jn<3 ? "henüz oy yok. tarafsız değilsin, oy vermemişsin." : `${ch} · %${Math.round(100*S.jyes/S.jn)} haklı diyorsun (${S.jn} oy).`;
   $("bN").textContent=`${S.badges.length} / ${ROZET.length}`;
   $("bCards").innerHTML = ROZET.map(r=> S.badges.includes(r.id) ? `<div class="on">${r.n}</div>` : `<div class="off">?</div>`).join("");
+  $("shareNote").hidden=true; $("share").hidden=false;
   show("s-ben");
 }
+$("share").addEventListener("click",()=>{ $("shareNote").hidden=false; $("share").hidden=true; });
 document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{ const t=b.dataset.tab; if(t==="jury") showJury(); else if(t==="ben") showBen(); else { if(dayDone()) showEnd(); else startDay(); } }));
 
 // ---------- test paneli ----------
@@ -656,15 +562,16 @@ const testMode=location.hash==="#ayar";
 if(testMode){
   $("dayChips").innerHTML=DAYS.map((_,i)=>`<button class="chip" data-d="${i}">${i+1}. gün</button>`).join("");
   document.querySelectorAll("[data-d]").forEach(b=>b.addEventListener("click",()=>{ testDay=+b.dataset.d; delete S.log["test-"+testDay]; save(); $("panel").hidden=true; startDay(); }));
+  $("clockBtn").addEventListener("click",()=>{ clockOverride=!clockOverride; $("clockBtn").classList.toggle("on",clockOverride); $("panel").hidden=true; if(dayDone()) showEnd(); });
+  $("nightBtn").addEventListener("click",()=>{ $("panel").hidden=true; const n=settle(curKey()); if(n) showNight(n); else alert("hesaplanacak bir şey yok: önce üç vukuat ve üç bahane."); });
   $("resetBtn").addEventListener("click",()=>{ try{ localStorage.removeItem(KEY); }catch(e){} location.reload(); });
   $("panelClose").addEventListener("click",()=>$("panel").hidden=true);
   document.querySelector(".brand").addEventListener("click",()=>$("panel").hidden=!$("panel").hidden);
-  $("dayLbl").textContent+=" · panel: başlığa dokun";
 }
 
 // ---------- açılış ----------
 $("startBtn").addEventListener("click",()=>{ S.started=true; save(); startDay(); });
-if(!S.started) show("s-start"); else startDay();
+if(!S.started) show("s-start"); else if(pendingNight){ $("dayLbl").textContent=`${curIdx()+1}. gün`; showNight(pendingNight); } else startDay();
 setInterval(()=>{ if(dayKey(0)!==today) location.reload(); },60000);
 </script>
 </body>
